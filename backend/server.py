@@ -20,6 +20,39 @@ db = firestore.client()
 def index():
     return json.dumps({'message': 'hello world'})
 
+@app.route('/get-clusters')
+def get_clusters():
+    args = request.args
+    username = args.get('username')
+
+    clusters = []
+    docs = db.collection('clusters').where('username', '==', username).stream()
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        clusters.append({
+            'name': doc_dict['name'],
+            'center': doc_dict['center']
+        })
+    
+    return json.dumps({
+        'message': 'succeeded!',
+        'clusters': clusters
+    })
+
+@app.route('/change-cluster-name')
+def change_cluster_name():
+    args = request.args
+    cluster_id = args.get('cluster_id')
+    new_cluster_name = args.get('new_cluster_name')
+
+    doc = db.collection('clusters').document(cluster_id)
+    doc.update({
+        'name': new_cluster_name
+    })
+
+    return json.dumps({'message': 'succeeded!'})
+
+
 @app.route('/send-browser-history')
 def send_browser_history():
     args = request.args
