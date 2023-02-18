@@ -12,20 +12,21 @@ nltk.download('averaged_perceptron_tagger')
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Load Data
-loader = UnstructuredFileLoader("test_output.txt")
-raw_documents = loader.load()
+def ingestion(id):
+    # Load Data
+    loader = UnstructuredFileLoader(f"{id}_output.txt")
+    raw_documents = loader.load()
 
-# Split text
-text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-documents = text_splitter.split_documents(raw_documents)
-
-
-# Load Data to vectorstore
-embeddings = OpenAIEmbeddings()
-vectorstore = FAISS.from_documents(documents, embeddings)
+    # Split text
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    documents = text_splitter.split_documents(raw_documents)
 
 
-# Save vectorstore
-with open("vectorstore.pkl", "wb") as f:
-    pickle.dump(vectorstore, f)
+    # Load Data to vectorstore
+    embeddings = OpenAIEmbeddings()
+    vectorstore = FAISS.from_documents(documents, embeddings)
+
+
+    # Save vectorstore
+    with open(f"vectorstore{id}.pkl", "wb") as f:
+        pickle.dump(vectorstore, f)

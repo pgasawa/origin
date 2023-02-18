@@ -449,37 +449,37 @@ def headers_para(doc, size_tag):  # thanks to https://towardsdatascience.com/ext
 
 
 
+def scrape(urls, id):
+    # urls = ["https://people.eecs.berkeley.edu/~jrs/189/lec/05.pdf",
+    #         "https://people.eecs.berkeley.edu/~jrs/189/lec/06.pdf",
+    #         "https://people.eecs.berkeley.edu/~jrs/189/hw/hw3.pdf",
+    #         "https://people.eecs.berkeley.edu/~jrs/189/lec/02.pdf",
+    #         "https://people.eecs.berkeley.edu/~jrs/189/lec/01.pdf",
+    #         "https://people.eecs.berkeley.edu/~jrs/189/lec/03.pdf",
+    #         "https://people.eecs.berkeley.edu/~jrs/189/lec/04.pdf",
+    #         "https://people.eecs.berkeley.edu/~jrs/189/"]
+    all_sentences = []
+    for url in urls:
+        if url.find(".pdf")!=-1:
+            print("This is a pdf")
+            url_tag = "pdf"
+            sentences = extract_sentences(get_pdf_text(url), allow_number_start=False)
+        elif url.find(".txt")!=-1:
+            print("This is a text file")
+            url_tag = "text"
+            lines = text_from_txt(url)
+            sentences = extract_sentences(lines)
+        else:
+            print("This is a website")
+            url_tag = "website"
+            soup = get_soup(url)
+            paragraphs = get_paragraphs(soup)
+            sentences = extract_sentences(paragraphs)
 
-urls = ["https://people.eecs.berkeley.edu/~jrs/189/lec/05.pdf",
-        "https://people.eecs.berkeley.edu/~jrs/189/lec/06.pdf",
-        "https://people.eecs.berkeley.edu/~jrs/189/hw/hw3.pdf",
-        "https://people.eecs.berkeley.edu/~jrs/189/lec/02.pdf",
-        "https://people.eecs.berkeley.edu/~jrs/189/lec/01.pdf",
-        "https://people.eecs.berkeley.edu/~jrs/189/lec/03.pdf",
-        "https://people.eecs.berkeley.edu/~jrs/189/lec/04.pdf",
-        "https://people.eecs.berkeley.edu/~jrs/189/"]
-all_sentences = []
-for url in urls:
-    if url.find(".pdf")!=-1:
-        print("This is a pdf")
-        url_tag = "pdf"
-        sentences = extract_sentences(get_pdf_text(url), allow_number_start=False)
-    elif url.find(".txt")!=-1:
-        print("This is a text file")
-        url_tag = "text"
-        lines = text_from_txt(url)
-        sentences = extract_sentences(lines)
-    else:
-        print("This is a website")
-        url_tag = "website"
-        soup = get_soup(url)
-        paragraphs = get_paragraphs(soup)
-        sentences = extract_sentences(paragraphs)
+        for sentence in sentences:
+            all_sentences.append(sentence + "\n\n")
 
-    for sentence in sentences:
-        all_sentences.append(sentence + "\n\n")
-
-f = open("./test_output.txt", "w")
-f.writelines(all_sentences)
-f.close()
+    f = open(f"./{id}_output.txt", "w")
+    f.writelines(all_sentences)
+    f.close()
 

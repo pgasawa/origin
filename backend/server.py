@@ -7,6 +7,8 @@ from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, firestore
 
+from ... import ingest_data, web_scraper, summarization
+
 from embeddings import run_kmeans
 
 app = Flask(__name__)
@@ -52,6 +54,11 @@ def change_cluster_name():
 
     return json.dumps({'message': 'succeeded!'})
 
+@app.route('/summarize_cluster')
+def summarize_cluster(cluster_id):
+    f = open(f"./{cluster_id}_output.txt", "w")
+    input_text = " ".join(f.readlines()).replace("\n\n", " ")
+    return summarization.summary(input_text)
 
 @app.route('/send-browser-history')
 def send_browser_history():
@@ -82,8 +89,15 @@ def send_browser_history():
     kmeans = run_kmeans(titles, num_clusters=2)
     cluster_centers = kmeans.cluster_centers_
 
+    labels = kmeans.labels_
+    cluster_urls = {}
+
     clusters_count = db.collection('clusters').where('username', '==', username).count().get()[0][0].value
     if clusters_count == 0:
+
+        # Create doc id array
+        doc_ids = []
+
         # Create new clusters
         for i in range(cluster_centers.shape[0]):
             cluster_center = cluster_centers[i].tolist()
@@ -93,9 +107,21 @@ def send_browser_history():
                 'name': f'Unnamed Cluster {i+1}',
                 'center': cluster_center
             })
+            doc_ids.append(doc.id)
+        
+        for i, label in enumerate(labels):
+            if doc_ids[label] not in cluster_urls:
+                cluster_urls[doc_ids[label]] = [urls[i]]
+            else:
+                cluster_urls[doc_ids[label]].append(urls[i])
+        # Run web scraper on each cluster of urls
+        for id, urls in cluster_urls.items():
+            web_scraper.scrape(urls, id)
+            ingest_data.ingestion(id)
     else:
         # Switch existing clusters
         clusters = db.collection('clusters').where('username', '==', username).stream()
+        cluster_ids = []
         for cluster in clusters:
             old_center = cluster.to_dict()['center']
             old_center_np = np.array(old_center)
@@ -109,6 +135,16 @@ def send_browser_history():
             cluster.reference.update({
                 'center': best_center
             })
+            cluster_ids.append(cluster.id)
+        for i, label in enumerate(labels):
+            if cluster_ids[label] not in cluster_urls:
+                cluster_urls[cluster_ids[label]] = [urls[i]]
+            else:
+                cluster_urls[cluster_ids[label]].append(urls[i])
+        # Run web scraper on each cluster of urls
+        for id, urls in cluster_urls.items():
+            web_scraper.scrape(urls, id)
+            ingest_data.ingestion(id)
 
     return json.dumps({'message': 'succeeded!'})
 
