@@ -1,0 +1,964 @@
+I want to give you four levels of abstraction that can help you think about machine learning.
+
+As a data scientist, you might be given an application, and your challenge is to turn it into an optimization problem that we know how to solve.
+
+Sometimes you get a big improvement by tailoring the model or its features to ﬁt the structure of your speciﬁc data.
+
+The model also has a big e ↵ ect on whether you overﬁt or underﬁt.
+
+And if you want a model that you can interpret so you can do inference , the model has to have a simple structure.
+
+Lastly, you have to pick a model that leads to an optimization problem that can be solved.
+
+Nevertheless, for everything you learn in this class, think about where it ﬁts in this hierarchy.
+
+An important skill for you to develop is to be able to go from an application to a well-deﬁned optimization problem.
+
+Find w that minimizes (or maximizes) a continuous objective fn f ( w ).
+
+A global minimum of f is a value w such that f ( w )  f ( v ) for every v .
+
+E.g., perceptron risk fn is convex and nonsmooth.
+
+These algs ﬁnd a local minimum.
+
+Use Lagrange multipliers.
+
+Linear objective fn + linear inequality constraints.
+
+The set of points w that satisfy all constraints is a convex polytope called the feasible region F [shaded].
+
+The optimum is the point in F that is furthest in the direction c .
+
+A point set P is convex if for every p , q 2 P , the line segment with endpoints p , q lies entirely in P .
+
+The optimum achieves equality for some constraints (but not most), called the active constraints of the optimum.
+
+In the ﬁgure above, there are two active constraints.
+
+For example, in the ﬁgure above, if c pointed straight up, every point on the top horizontal edge would be optimal.
+
+The data are linearly separable i ↵ the feasible region is not the empty set. !
+
+If you knew which constraints would be the active constraints once you found the solution, it would be easy; the hard part is ﬁguring out which constraints should be the active ones.
+
+There are exponentially many possibilities, so you can’t a ↵ ord to try them all.
+
+Quadratic, convex objective fn + linear inequality constraints.
+
+Qw > 0 for all w , 0.
+
+Only one local minimum!
+
+If Q is indeﬁnite, then f is not convex, the minimum is not always unique, and quadratic programming is NP-hard.
+
+Find maximum margin classiﬁer.
+
+Numerical optimization @ Berkeley: EECS 127 / 227AT / 227BT / 227C.
+
+Suppose your data is adult men and women with just one feature: their height.
+
+You want to train a classiﬁer that takes in an adult’s height and returns a classiﬁcation, man or woman.
+
+Suppose you are asked to predict the sex of a 5’5” adult.
+
+Well, your training set includes some 5’5” women and some 5’5” men.
+
+What should you do?] [In your feature space, you have two training points at the same location with di ↵ erent classes.
+
+More generally, the height distributions of men and women overlap.
+
+Multiple sample points with di ↵ erent classes could lie at same point: we want a probabilistic classiﬁer.
+
+Suppose 10% of population has cancer, 90% doesn’t.
+
+P (1,200  X  1,600) = 0 .
+
+You meet guy eating x = 1,400 calories / day.
+
+Guess whether he has cancer?
+
+P ( X ) = 0 .
+
+P ( X ) = 0 .
+
+P (cancer 1,200  X  1,600 cals) = 5 / 14 ⇡ 36%.
+
+But that’s not always the right assumption.
+
+If you’re developing a cheap screening test for cancer, you’d rather have more false positives and fewer false negatives.
+
+A false negative might mean somebody misses an early diagnosis and dies of a cancer that could have been treated if caught early.
+
+A loss function L ( z , y ) speciﬁes badness if classiﬁer predicts z , true class is y .
+
+A 36% probability of loss 5 is worse than a 64% prob.
+
+The Bayes risk, aka optimal risk, is the risk of the Bayes classiﬁer.
+
+Suppose X has a continuous probability density fn (PDF).
+
+In other words, suppose you want a classiﬁer that maximizes the chance of a correct prediction.
+
+The wrong answer would be to look where these two curves cross and make that be the decision boundary.
+
+Deﬁne risk as before, replacing summations with integrals.
+
+The Bayesian approach is a particularly convenient way to generate multi-class classiﬁers, because you can simply choose whichever class has the greatest posterior probability.
+
+There is usually error in all of these probabilities.
+
+TEX or other word processing software.
+
+TEX, one of the crown jewels of computer science, now is a good time!
+
+Neatly handwritten and scanned solutions will also be accepted.
+
+Some of the ma- terial may not have been covered in lecture; you are responsible for finding resources to understand it.
+
+Submit your predictions for the test sets to Kaggle as early as possible.
+
+Include your Kaggle scores in your write-up.
+
+Write-up: Submit your solution in PDF format to “Homework 3 Write-Up” in Gradescope.
+
+If there are graphs, include those graphs on the same pages as the question write-up.
+
+DO NOT put them in an appendix.
+
+We need each solution to be self-contained on pages of its own.
+
+TEX or Word to typeset your solution.
+
+You may also scan a neatly handwritten solution to produce the PDF.
+
+Begin code for each coding question in a fresh page.
+
+Do not put code from multiple questions in the same page.
+
+When you upload this PDF on Gradescope, make sure that you assign the relevant pages of your code from appendix to correct questions.
+
+Copying the answers or code of another student is strictly forbidden.
+
+Furthermore, all external material (i.e., anything outside lectures and assigned readings, including figures and pictures) should be cited properly.
+
+We wish to remind you that consequences of academic misconduct are particularly severe !
+
+Code: Submit your code as a .zip file to “Homework 3 Code”.
+
+This ensures your results are replicated when readers run your code.
+
+For example, you can seed numpy with np.random.seed(42) .
+
+Supply instructions on how to add data to your code.
+
+Code requiring exorbitant memory or execution time might not be considered.
+
+Code submitted here must match that in the PDF Write-up.
+
+The Kaggle score will not be accepted if the code provided a) does not compile or b) compiles but does not produce the file submitted to Kaggle.
+
+Find the Bayes optimal decision boundary and the corresponding Bayes decision rule by finding the point(s) at which the posterior probabilities are equal.
+
+Use the 0-1 loss function.
+
+Suppose the decision boundary for your classifier is x = b .
+
+How does this value compare to that found in part 1?
+
+Write code to plot the isocontours of the following functions, each on its own separate figure.
+
+Make sure it is clear which figure belongs to which part.
+
+You’re free to use any plotting libraries or stats utilities available in your programming language; for instance, in Python you can use Matplotlib and SciPy.
+
+Choose the boundaries of the domain you plot large enough to show the interesting characteristics of the isocontours (use your judgment).
+
+Make sure we can tell what isovalue each contour is associated with—you can do this with labels or a colorbar / legend.
+
+No, it is not itself a valid PDF.
+
+In your code, make sure to choose and set a fixed random number seed for whatever random number generator you use, so your simulation is reproducible, and document your choice of random number seed and random number generator in your write-up.
+
+For each of the following parts, include the corresponding output of your program.
+
+Compute the 2 × 2 covariance matrix of the sample (based on the sample mean, not the true mean—which you would not know given real-world data).
+
+Compute the eigenvectors and eigenvalues of this covariance matrix.
+
+The eigenvector arrows should orig- inate at the mean and have magnitudes equal to their corresponding eigenvalues.
+
+Not doing that may lead to hours of frustration!
+
+Plot these rotated points on a new two dimensional-grid, again with both axes having range [ − 15 , 15].
+
+In your plots, clearly label the axes and include a title .
+
+Moreover, make sure the horizontal and vertical axis have the same scale!
+
+The aspect ratio should be one.
+
+Suppose we have a classification problem with classes labeled 1 , . . .
+
+Hence the risk of classifying a new data point x as class i ∈ { 1 , 2 , . . .
+
+L ( r ( x ) = i , y = j ) P ( Y = j x ) .
+
+To be clear, the actual label Y can never be c + 1.
+
+Explain why this is consistent with what one would expect intuitively.
+
+Every sample point comes from a distribution with a di ff erent variance .) Note the word “univariate”; we are working in dimension d = 1, and our “points” are real numbers.
+
+Derive the maximum likelihood estimates, denoted ˆ µ and ˆ σ , for the mean µ and the pa- rameter σ .
+
+Show all your work.
+
+Given the true value of a statistic θ and an estimator ˆ θ of that statistic, we define the bias of the estimator to be the the expected di ff erence from the true value.
+
+We say that an estimator is unbiased if its bias is 0.
+
+Either prove or disprove the following statement: The MLE sample estimator ˆ µ is unbiased .
+
+The estimate ˆ Σ makes sense as an approximation of Σ only if ˆ Σ is invertible.
+
+Under what circumstances is ˆ Σ not invertible?
+
+Make sure your answer is complete; i.e., it includes all cases in which the covariance matrix of the sample is singular.
+
+Suggest a way to fix a singular covariance matrix estimator ˆ Σ by replacing it with a similar but invertible matrix.
+
+Your suggestion may be a kludge, but it should not change the covariance matrix too much.
+
+Note that infinitesimal numbers do not exist; if your solution uses a very small number, explain how to calculate a number that is su ffi ciently small for your purposes.
+
+Consider the normal distribution N (0 , Σ ) with mean µ = 0.
+
+Consider all vectors of length 1; i.e., any vector x for which ∥ x ∥ = 1.
+
+Which vector(s) x of length 1 maximizes the PDF f ( x )?
+
+Which vector(s) x of length 1 minimizes f ( x )?
+
+Your answers should depend on the properties of Σ .
+
+Explain your answer.
+
+First, compute the vari- ance of p .
+
+In this problem, you will build classifiers based on Gaussian discriminant analysis.
+
+Unlike Home- work 1, you are NOT allowed to use any libraries for out-of-the-box classification (e.g. sklearn ).
+
+You may use anything in numpy and scipy .
+
+The training and test data can be found with this homework.
+
+Do NOT use the training / test data from Homework 1, as they have changed for this homework.
+
+The starter code is similar to HW1’s; we provide check .
+
+Submit your predicted class labels for the test data on the Kaggle competition website and be sure to include your Kaggle display name and scores in your writeup.
+
+Also be sure to include an appendix of your code at the end of your writeup.
+
+Taking pixel values as features (no new features yet, please), fit a Gaussian distribution to each digit class using maximum likelihood estimation.
+
+This involves computing a mean and a covariance matrix for each digit class, as discussed in Lecture 9.
+
+You may, and probably should, contrast-normalize the images before using their pixel values.
+
+Written answer + graph) Visualize the covariance matrix for a particular class (digit).
+
+How do the diagonal terms compare with the o ff -diagonal terms?
+
+What do you conclude from this?
+
+Classify the digits in the test set on the basis of posterior probabilities with two di ff erent approaches.
+
+In your implementation, you might run into issues of determinants overflowing or under- flowing, or normal PDF probabilities underflowing.
+
+These problems might be solved by learning about numpy.linalg.slogdet and / or scipy.stats.multivariate normal. logpdf .
+
+You should not compute the inverse of Σ (nor the determinant of Σ ) as it is not guaranteed to be invertible.
+
+Instead, you should find a way to solve the implied linear system without computing the inverse.
+
+Hold out 10,000 randomly chosen training points for a validation set.
+
+Classify each image in the validation set into one of the 10 classes.
+
+If any of these covariance matrices turn out singular, implement the trick you described in Q7(b).
+
+You are welcome to use validation to choose the right constant(s) for that trick.) Repeat the same tests and error rate calculations you did for LDA.
+
+Plot all the 10 curves on the same graph as shown in Figure 1.
+
+Which digit is easiest to classify?
+
+Write down your answer and suggest why you think it’s the easiest digit.
+
+Written answer) Using the mnist-data-hw3.npz , train your best classifier for the training data and classify the images in the test data .
+
+Submit your labels to the online Kaggle compe- tition.
+
+Record your optimum prediction rate in your submission and include your Kaggle username.
+
+You are welcome to compute extra features for the Kaggle competition, as long as they do not use an exterior learned model for their computation (no transfer learning!).
+
+If you do so, please describe your implementation in your assignment.
+
+Please use extra features only for the Kaggle portion of the assignment.
+
+Written answer) Next, apply LDA or QDA (your choice) to spam ( spam-data-hw3.npz ).
+
+Submit your test results to the online Kaggle competition.
+
+Record your optimum prediction rate in your submission.
+
+If you use additional features (or omit features), please describe them.
+
+We include a featurize.py file (similar to HW1’s) that you may modify to create new features.
+
+If you use the defaults, expect relatively low classification rates.
+
+We suggest using a Bag-Of-Words model.
+
+You are encouraged to explore alternative hand-crafted features, and are welcome to use any third-party library to implement them, as long as they do not use a separate model for their computation (no large language models or word2vec!).
+
+Please ensure you have completed the following before your final submission.
+
+Have you copied and hand-signed the honor code specified in Question 1?
+
+Have you listed all students (Names and ID numbers) that you collaborated with?
+
+Have you included your Kaggle Score and Kaggle Username for both questions 8.4 and 8.5?
+
+Have you provided a code appendix including all code you wrote in solving the homework?
+
+Have you included featurize.py in your code appendix if you modified it?
+
+Have you created an archive containing all “.py” files that you wrote or modified to generate your homework solutions (including featurize.py if you modified it)?
+
+Have you removed all data and extraneous files from the archive?
+
+Have you included a README file in your archive briefly describing how to run your code on the test data and reproduce your results?
+
+Have you submitted your written solutions to the Gradescope assignment titled HW3 Write- Up and selected pages appropriately?
+
+Have you submitted your executable code archive to the Gradescope assignment titled HW3 Code ?
+
+Have you submitted your test set predictions for both MNIST and SPAM to the appropriate Kaggle challenges?
+
+Congratulations!
+
+You have completed Homework 3.
+
+You are given sample of n observations, each with d features [aka predictors].
+
+Some observations belong to class C; some do not.
+
+Predict whether future borrowers will default, based on their income & age.
+
+Represent each observation as a point in d -dimensional space, called a sample point / a feature vector / independent variables.
+
+Then we use these curves to predict which future borrowers will default.
+
+When sinuous decision boundary ﬁts sample points so well that it doesn’t classify future points well.
+
+Aka predictor function.
+
+Usually uses a linear decision function.
+
+Think of x as a point in 5-dimensional space.
+
+H = { x : w · x = � ↵ } .
+
+The set H is called a hyperplane.
+
+Let x , y be 2 points that lie on H .
+
+Then w · ( y � x ) = 0.
+
+If w is a unit vector, then w · x + ↵ is the signed distance from x to H . I.e., positive on w ’s side of H ; negative on other side.
+
+Moreover, the distance from H to the origin is ↵ .
+
+Hence ↵ = 0 if and only if H passes through origin.
+
+If w is not a unit vector, w · x + ↵ is the signed distance times some real.
+
+The coe � cients in w , plus ↵ , are called weights (or parameters or regression coe � cients).
+
+The input data is linearly separable if there exists a hyperplane that separates all the sample points in class C from all the points NOT in class C.
+
+Obviously, if your data are not linearly separable, a linear classiﬁer cannot do a perfect job.
+
+Note that this is hardly the worst example I could have given.
+
+Slow, but correct for linearly separable points.
+
+Uses a numerical optimization algorithm, namely, gradient descent.
+
+How many of you know what gradient descent is?
+
+How many of you know what a linear program is?
+
+How many of you know what the simplex algorithm for linear programming is?
+
+How many of you know what a quadratic program is?
+
+We’re going to learn what most of these things are.
+
+As machine learning people, we will be heavy users of optimization methods.
+
+Unfortunately, I won’t have time to teach you algorithms for many optimization problems, but we’ll learn a few.
+
+For simplicity, consider only decision boundaries that pass through the origin.
+
+We deﬁne a risk function R that is positive if some constraints are violated.
+
+Then we use optimization to choose w that minimizes R .
+
+But if z has the wrong sign, the loss function is positive.
+
+Otherwise, R ( w ) is positive, and we want to ﬁnd a better w .
+
+Find w that minimizes R ( w ).
+
+Every point in the dark green ﬂat spot is a minimum.
+
+But we’ve transformed this into a problem of ﬁnding an optimal point in a di ↵ erent space, which I’ll call w -space.
+
+Point x lies on hyperplane { z : w · z = 0 } , w · x = 0 , point w lies on hyperplane { z : x · z = 0 } in w -space.
+
+For a point x not in class C (marked by an X), w and x must be on opposite sides of the hyperplane that x transforms into.
+
+We have switched from the problem of ﬁnding a hyperplane in x - space to the problem of ﬁnding a point in w -space.
+
+An optimization algorithm: gradient descent on R .
+
+Given a starting point w , ﬁnd gradient of R with respect to w ; this is the direction of steepest ascent.
+
+Take a step in the opposite direction.
+
+At any point w , we walk downhill in direction of steepest descent, �r R ( w ).
+
+Each step takes O ( nd ) time.
+
+Called the perceptron algorithm.
+
+Each step takes O ( d ) time.
+
+However, stochastic gradient descent does not work for every problem that gradient descent works for.
+
+What if separating hyperplane doesn’t pass through origin?
+
+Add a ﬁctitious dimension.
+
+Run perceptron algorithm in ( d + 1)-dimensional space.
+
+It was originally designed not to be a program, but to be implemented in hardware for image recognition on a 20 ⇥ 20 pixel image.
+
+Mark I perceptron.jpg (from Wikipedia, “Perceptron”) [The Mark I Perceptron Machine.
+
+The algorithm gets slower if ✏ is too small because it has to take lots of steps to get down the hill.
+
+There’s no reliable way to choose a good step size ✏ .
+
+Fortunately, optimization algorithms have improved a lot since 1957.
+
+You can get rid of the step size by using a decent modern “line search” al- gorithm.
+
+The margin of a linear classiﬁer is the distance from the decision boundary to the nearest sample point.
+
+What if we make the margin as wide as possible?
+
+To maximize the margin, minimize k w k .
+
+Called a quadratic program in d + 1 dimensions and n constraints.
+
+It has one unique solution!
+
+The solution gives us a maximum margin classiﬁer, aka a hard-margin support vector machine (SVM).
+
+The SVM is looking for the point nearest the origin that lies above the blue plane (representing an in-class training point) but below the red and pink planes (representing out-of-class training points).
+
+In this example, that optimal point lies where the three planes intersect.
+
+Allow some points to violate the margin, with slack variables.
+
+Re-deﬁne “margin” to be 1 / k w k .
+
+To prevent abuse of slack, we add a loss term to objective fn.
+
+Use validation to choose C .
+
+The further a point penetrates the margin, the bigger the ﬁne you have to pay.
+
+We want to make the margin as wide as possible, but we also want to spend as little money as possible.
+
+If the regularization parameter C is small, it means we’re willing to spend lots of money on violations so we can get a wider margin.
+
+If C is big, it means we’re cheap and we won’t pay much for violations, even though we’ll su ↵ er a narrower margin.
+
+How to do nonlinear decision boundaries?
+
+Make nonlinear features that lift points into a higher-dimensional space.
+
+High- d linear classiﬁer !
+
+Find a linear classiﬁer in � -space.
+
+It induces a sphere classiﬁer in x -space.
+
+Hence points inside sphere $ same side of hyperplane in � -space.
+
+A hyperplane is essentially a hypersphere with inﬁnite radius.
+
+So hypersphere decision boundaries can do everything hyperplane decision boundaries can do, plus a lot more.
+
+Isosurface deﬁned by this equation is called a quadric.
+
+In the special case of two dimensions, it’s also known as a conic section.
+
+If the dimension is large, these feature vectors are getting huge, and that’s going to impose a serious computational cost.
+
+Artist’s conception; these aren’t actual calculations, just hand-drawn guesses.
+
+It’s a balancing act between underﬁtting and overﬁtting.
+
+But features can get much more complicated than polynomials, and they can be tailored to ﬁt a speciﬁc problem.
+
+Collect line orientations in local histograms (each having 12 orientation bins per region); use histograms as features ( instead of raw pixels).
+
+Maji & Malik, 2009.
+
+Use Ed Discussion for public and private questions that can be viewed by all the TAs.
+
+I check Ed Discussion far more often and reliably than email.
+
+For very personal issues, send email to jrs@berkeley.edu.
+
+TBA and by appointment.
+
+This class introduces algorithms for learning, which constitute an important part of artificial intelligence.
+
+Both textbooks for this class are available free online.
+
+Hardcover and eTextbook versions are also available.
+
+You have a total of 5 slip days that you can apply to your semester's homework.
+
+We will simply not award points for any late homework you submit that would bring your total slip days over five.
+
+If you are in the Disabled Students' Program and you are offered an extension, even with your extension plus slip days combined, no single assignment can be extended more than 5 days.
+
+The following homework due dates and midterm date are tentative and may change.
+
+The CS 289A Project has a proposal due Friday, April 7.
+
+The video is due Monday, May 8, and the final report is due Tuesday, May 9.
+
+Please sign up your group for a ten-minute meeting slot with one of the TAs.
+
+Dates are available from <b>April 11 to April 15</b>.
+
+If you need serious computational resources, our former Teaching Assistant Alex Le-Tu has written lovely guides to using Google Cloud and using Google Colab.
+
+Homework 1 is due Wednesday, January 25 at 11:59 PM.
+
+Warning: 200 MB zipfile.
+
+Homework 2 is due Wednesday, February 8 at 11:59 PM.
+
+Homework 3 is due Wednesday, February 22 at 11:59 PM.
+
+Warning: 22 MB zipfile.
+
+Homework 4 is due Wednesday, March 8 at 11:59 PM.
+
+Homework 5 is due Wednesday, March 22 at 11:59 PM.
+
+Homework 6 is due Wednesday, April 19 at 11:59 PM.
+
+Homework 7 is due Wednesday, May 3 at 11:59 PM.
+
+The Midterm will take place on Monday, March 20 at 7:00–8:30 PM in Wheeler Auditorium (150 Wheeler Hall).
+
+Previous midterms are available: Without solutions: Spring 2013, Spring 2014, Spring 2015, Fall 2015, Spring 2016, Spring 2017, Spring 2019, Summer 2019, Spring 2020 Midterm A, Spring 2020 Midterm B, Spring 2021, Spring 2022.
+
+With solutions: Spring 2013, Spring 2014, Spring 2015, Fall 2015, Spring 2016, Spring 2017, Spring 2019, Summer 2019, Spring 2020 Midterm A, Spring 2020 Midterm B, Spring 2021, Spring 2022.
+
+The Final Exam will take place on Friday, May 12 at 3–6 PM.
+
+Previous final exams are available.
+
+Without solutions: Spring 2013, Spring 2014, Spring 2015, Fall 2015, Spring 2016, Spring 2017, Spring 2019, Spring 2020, Spring 2021, Spring 2022.
+
+With solutions: Spring 2013, Spring 2014, Spring 2015, Fall 2015, Spring 2016, Spring 2017, Spring 2019, Spring 2020, Spring 2021, Spring 2022.
+
+The references below to sections in Introduction to Statistical Learning with Applications in R (ISL) are for the first edition.
+
+I will update them to the second edition when time permits.
+
+Lecture 1 (January 18): Introduction.
+
+Classification, training, and testing.
+
+Validation and overfitting.
+
+Read ESL, Chapter 1.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's the captioned version of the screencast (screen only).
+
+Lecture 2 (January 23): Linear classifiers.
+
+Decision functions and decision boundaries.
+
+The centroid method. Perceptrons.
+
+Read parts of the Wikipedia Perceptron page.
+
+Optional: Read ESL, Section 4.5–4.5.1.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's the captioned version of the screencast (screen only).
+
+Lecture 3 (January 25): Gradient descent, stochastic gradient descent, and the perceptron learning algorithm.
+
+Feature space versus weight space.
+
+The maximum margin classifier, aka hard-margin support vector machine (SVM).
+
+Read ISL, Section 9–9.1.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's the captioned version of the screencast (screen only).
+
+Lecture 4 (January 30): The support vector classifier, aka soft-margin support vector machine (SVM).
+
+Features and nonlinear decision boundaries.
+
+Read ESL, Section 12.2 up to and including the first paragraph of 12.2.1.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's the captioned version of the screencast (screen only).
+
+Lecture 5 (February 1): Machine learning abstractions: application/data, model, optimization problem, optimization algorithm.
+
+Common types of optimization problems: unconstrained, constrained (with equality constraints), linear programs, quadratic programs, convex programs. Optional: Read (selectively) the Wikipedia page on mathematical optimization.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's the captioned version of the screencast (screen only).
+
+Lecture 6 (February 6): Decision theory: the Bayes decision rule and optimal risk.
+
+Generative and discriminative models.
+
+Read ISL, Section 4.4.1.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's a backup screencast (screen only).
+
+Lecture 7 (February 8): Gaussian discriminant analysis, including quadratic discriminant analysis (QDA) and linear discriminant analysis (LDA).
+
+Maximum likelihood estimation (MLE) of the parameters of a statistical model.
+
+Fitting an isotropic Gaussian distribution to sample points.
+
+Read ISL, Section 4.4.
+
+Optional: Read (selectively) the Wikipedia page on maximum likelihood estimation.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's a backup screencast (screen only).
+
+Lecture 8 (February 13): Eigenvectors, eigenvalues, and the eigendecomposition.
+
+The Spectral Theorem for symmetric real matrices.
+
+The quadratic form and ellipsoidal isosurfaces as an intuitive way of understanding symmetric matrices.
+
+Application to anisotropic normal distributions (aka Gaussians).
+
+Read Chuong Do's notes on the multivariate Gaussian distribution.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+However, the screen recording failed, so you should probably watch my 2021 lecture instead.
+
+Lecture 9 (February 15): Anisotropic normal distributions (aka Gaussians).
+
+MLE, QDA, and LDA revisited for anisotropic Gaussians.
+
+Read ISL, Sections 4.4 and 4.5.
+
+My lecture notes (PDF).
+
+The lecture video.
+
+In case you don't have access to bCourses, here's a backup screencast (screen only).
+
+February 20 is Presidents' Day.
+
+Lecture 10 (February 22): Regression: fitting curves to data.
+
+The 3-choice menu of regression function + loss function + cost function.
+
+Least-squares linear regression as quadratic minimization.
+
+The design matrix, the normal equations, the pseudoinverse, and the hat matrix (projection matrix).
+
+Logistic regression; how to compute it with gradient descent or stochastic gradient descent.
+
+Read ISL, Sections 4–4.3.
+
+Lecture 11 (February 27): Newton's method and its application to logistic regression. LDA vs.
+
+Weighted least-squares regression.
+
+Least-squares polynomial regression.
+
+Read ISL, Sections 4.4.3, 7.1, 9.3.3; ESL, Section 4.4.1.
+
+Optional: here is a fine short discussion of ROC curves—but skip the incoherent question at the top and jump straight to the answer.
+
+Lecture 12 (March 1): Statistical justifications for regression.
+
+The empirical distribution and empirical risk.
+
+How the principle of maximum likelihood motivates the cost functions for least-squares linear regression and logistic regression.
+
+The bias-variance decomposition; its relationship to underfitting and overfitting; its application to least-squares linear regression.
+
+Read ESL, Sections 2.6 and 2.9.
+
+Optional: Read the Wikipedia page on the bias-variance trade-off.
+
+Lecture 13 (March 6): Ridge regression: penalized least-squares regression for reduced overfitting.
+
+How the principle of maximum a posteriori (MAP) motivates the penalty term (aka Tikhonov regularization). Subset selection.
+
+Lasso: penalized least-squares regression for reduced overfitting and subset selection.
+
+Read ISL, Sections 6–6.1.2, the last part of 6.1.3 on validation, and 6.2–6.2.1; and ESL, Sections 3.4–3.4.3.
+
+Optional: This CrossValidated page on ridge regression is pretty interesting.
+
+Lecture 14 (March 8): Decision trees; algorithms for building them.
+
+Entropy and information gain.
+
+Read ISL, Sections 8–8.1.
+
+Lecture 15 (March 13): More decision trees: multivariate splits; decision tree regression; stopping early; pruning.
+
+Ensemble learning: bagging (bootstrap aggregating), random forests.
+
+Read ISL, Section 8.2.
+
+Lecture 16 (March 15): Kernels.
+
+Kernel ridge regression.
+
+The polynomial kernel. Kernel perceptrons.
+
+Kernel logistic regression.
+
+The Gaussian kernel.
+
+Optional: Read ISL, Section 9.3.2 and ESL, Sections 12.3–12.3.1 if you're curious about kernel SVM.
+
+The Midterm will take place on Monday, March 20 at 7:00–8:30 PM in Wheeler Auditorium (150 Wheeler Hall).
+
+The midterm covers Lectures 1–13, the associated readings listed on the class web page, Homeworks 1–4, and discussion sections related to those topics.
+
+Lecture 17 (March 22): Neural networks.
+
+Gradient descent and the backpropagation algorithm.
+
+Read ESL, Sections 11.3–11.4.
+
+Optional: Welch Labs' video tutorial Neural Networks Demystified on YouTube is quite good (note that they transpose some of the matrices from our representation).
+
+Also of special interest is this Javascript neural net demo that runs in your browser.
+
+Here's another derivation of backpropagation that some people have found helpful.
+
+March 27–31 is Spring Recess.
+
+Lecture 18 (April 3): Neuron biology: axons, dendrites, synapses, action potentials.
+
+Differences between traditional computational models and neuronal computational models.
+
+Backpropagation with softmax outputs and logistic loss.
+
+Unit saturation, aka the vanishing gradient problem, and ways to mitigate it.
+
+Optional: Try out some of the Javascript demos on this excellent web page—and if time permits, read the text too.
+
+The first four demos illustrate the neuron saturation problem and its fix with the logistic loss (cross-entropy) functions.
+
+The fifth demo gives you sliders so you can understand how softmax works.
+
+Lecture 19 (April 5): Heuristics for faster training.
+
+Heuristics for avoiding bad local minima.
+
+Heuristics to avoid overfitting.
+
+Convolutional neural networks.
+
+Neurology of retinal ganglion cells in the eye and simple and complex cells in the V1 visual cortex.
+
+Read ESL, Sections 11.5 and 11.7.
+
+Here is the video about Hubel and Wiesel's experiments on the feline V1 visual cortex.
+
+Here is Yann LeCun's video demonstrating LeNet5.
+
+Optional: A fine paper on heuristics for better neural network learning is Yann LeCun, Leon Bottou, Genevieve B.
+
+Orr, and Klaus-Robert Müller, “Efficient BackProp,” in G.
+
+Orr and K.-R. Müller (Eds.), Neural Networks: Tricks of the Trade, Springer, 1998.
+
+Also of special interest is this Javascript convolutional neural net demo that runs in your browser.
+
+Some slides about the V1 visual cortex and ConvNets (PDF).
+
+Lecture 20 (April 10): Unsupervised learning.
+
+Principal components analysis (PCA).
+
+Derivations from maximum likelihood estimation, maximizing the variance, and minimizing the sum of squared projection errors.
+
+Eigenfaces for face recognition.
+
+Read ISL, Sections 10–10.2 and the Wikipedia page on Eigenface.
+
+Optional: Watch the video for Volker Blanz and Thomas Vetter's A Morphable Model for the Synthesis of 3D Faces.
+
+Lecture 21 (April 12): The singular value decomposition (SVD) and its application to PCA.
+
+Clustering: k-means clustering aka Lloyd's algorithm; k-medoids clustering; hierarchical clustering; greedy agglomerative clustering. Dendrograms. Read ISL, Section 10.3.
+
+Lecture 22 (April 17): The geometry of high-dimensional spaces. Random projection.
+
+The pseudoinverse and its relationship to the singular value decomposition.
+
+Optional: Mark Khoury, Counterintuitive Properties of High Dimensional Space.
+
+Optional: The Wikipedia page on the Moore–Penrose inverse.
+
+For reference: Sanjoy Dasgupta and Anupam Gupta, An Elementary Proof of a Theorem of Johnson and Lindenstrauss, Random Structures and Algorithms 22(1)60–65, January 2003.
+
+Lecture 23 (April 19): Learning theory.
+
+Range spaces (aka set systems) and dichotomies.
+
+The shatter function and the Vapnik–Chervonenkis dimension.
+
+Read Andrew Ng's CS 229 lecture notes on learning theory.
+
+For reference: Thomas M.
+
+Cover, Geometrical and Statistical Properties of Systems of Linear Inequalities with Applications in Pattern Recognition, IEEE Transactions on Electronic Computers 14(3):326–334, June 1965.
+
+Lecture 24 (April 24): AdaBoost, a boosting method for ensemble learning.
+
+Nearest neighbor classification and its relationship to the Bayes risk.
+
+Read ESL, Sections 10–10.5, and ISL, Section 2.2.3.
+
+For reference: Yoav Freund and Robert E.
+
+Schapire, A Decision-Theoretic Generalization of On-Line Learning and an Application to Boosting, Journal of Computer and System Sciences 55(1):119–139, August 1997.
+
+Freund and Schapire's Gödel Prize citation and their ACM Paris Kanellakis Theory and Practice Award citation.
+
+For reference: Thomas M.
+
+Cover and Peter E.
+
+Hart, Nearest Neighbor Pattern Classification, IEEE Transactions on Information Theory 13(1):21–27, January 1967.
+
+For reference: Evelyn Fix and J. L. Hodges Jr., Discriminatory Analysis---Nonparametric Discrimination: Consistency Properties, Report Number 4, Project Number 21-49-004, US Air Force School of Aviation Medicine, Randolph Field, Texas, 1951.
+
+See also This commentary on the Fix–Hodges paper.
+
+Lecture 25 (April 26): The exhaustive algorithm for k-nearest neighbor queries.
+
+Speeding up nearest neighbor queries.
+
+Voronoi diagrams and point location. k-d trees.
+
+Application of nearest neighbor search to the problem of geolocalization: given a query photograph, determine where in the world it was taken.
+
+If I like machine learning, what other classes should I take?
+
+For reference: the best paper I know about how to implement a k-d tree is Sunil Arya and David M.
+
+Mount, Algorithms for Fast Vector Quantization, Data Compression Conference, pages 381–390, March 1993.
+
+For reference: the IM2GPS web page, which includes a link to the paper.
+
+The Final Exam will take place on Friday, May 12, 3–6 PM.
+
+Sections begin to meet on January 24.
+
+Some of our office hours are online or hybrid.
+
+To attend an online office hour, submit a ticket to the Online Office Hour Queue at https://oh.eecs189.org and attend the office hour through Zoom at this Zoom link.
+
+Please read the <a href="https://piazza.com/class/kxznj3t030x34a?cid=49">online office hour rules in this Piazza post</a>.
+
+Supported in part by the National Science Foundation under Awards CCF-0430065, CCF-0635381, IIS-0915462, CCF-1423560, and CCF-1909204, in part by a gift from the Okawa Foundation, and in part by an Alfred P.
+
+Sloan Research Fellowship.
+
+Some of our office hours are online or hybrid.
+
+To attend an online office hour, submit a ticket to the Online Office Hour Queue at https://oh.eecs189.org and attend the office hour through Zoom at this Zoom link.
+
+CS 189/289A Introduction to Machine Learning Jonathan Shewchuk Spring 2023 Mondays and Wednesdays, 6:30–8:00 pm Hearst Field Annex A1 Begins Wednesday, January 18 Discussion sections begin Tuesday, January 24 Contact: Use Ed Discussion for public and private questions that can be viewed by all the TAs.
+
+I check Ed Discussion far more often and reliably than email.
+
+For very personal issues, send email to jrs@berkeley.edu.
+
+My office hours: TBA and by appointment.
+
+CS 189/289A Introduction to Machine Learning Jonathan Shewchuk Spring 2023 Mondays and Wednesdays, 6:30–8:00 pm Hearst Field Annex A1 Begins Wednesday, January 18 Discussion sections begin Tuesday, January 24 Contact: Use Ed Discussion for public and private questions that can be viewed by all the TAs.
+
+I check Ed Discussion far more often and reliably than email.
+
+For very personal issues, send email to jrs@berkeley.edu.
+
+My office hours: TBA and by appointment.
+
