@@ -9,37 +9,40 @@ import { Text, TextInput, View } from 'react-native';
 
 export default function Cluster(props) {
   const [text, setText] = useState(props.title);
-  function onEnter(newText) {
-    setText(newText); 
-    document.getElementById("ClusterButton").innerHTML = newText;
-    }
+  const [input, setInput] = useState('edit me');
+
+  function onEnter() {
+      setText(input);
+  }
+
   return (
-    <Stack direction="column">
-      <TextInput
-        style={{
-          color: "black",
-          padding: 0,
-          paddingLeft: 1,
-          justifyContent: "left",
-          backgroundColor: 'white',
-          textTransform: "lowercase"
-        }}
-        placeholder="edit me"
-        onSubmitEditing={(newText) => onEnter(newText)}
-      />
+      <Stack direction="column">
+          <TextInput
+              style={{
+                  color: 'black',
+                  padding: 0,
+                  paddingLeft: 1,
+                  justifyContent: 'left',
+                  backgroundColor: 'white',
+                  textTransform: 'lowercase'
+              }}
+              onSubmitEditing={onEnter}
+              onChange={(evt) => setInput(evt.target.value)}
+              value={input}
+          />
 
-      <Button
-        id="ClusterButton"
-        className="ClusterButton"
-        variant="contained"
-        endIcon={<RocketLaunchIcon />}
-        style={{
-          backgroundColor: 'black',
-          fontSize: 'medium'
-        }}
-      > {text}
-      </Button>
-    </Stack>
-
+          <Button
+              id="ClusterButton"
+              className="ClusterButton"
+              variant="contained"
+              endIcon={<RocketLaunchIcon />}
+              style={{
+                  backgroundColor: 'black',
+                  fontSize: 'medium'
+              }}
+          >
+              {text}
+          </Button>
+      </Stack>
   );
 }
