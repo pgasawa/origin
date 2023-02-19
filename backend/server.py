@@ -101,7 +101,7 @@ def send_browser_history():
         titles.append(doc_dict['title'])
         timestamps.append(doc_dict['timestamp'])
 
-    kmeans = run_kmeans(titles, num_clusters=2)
+    kmeans, cluster_titles = run_kmeans(titles, num_clusters=2)
     cluster_centers = kmeans.cluster_centers_
 
     labels = kmeans.labels_
@@ -119,7 +119,7 @@ def send_browser_history():
             doc = db.collection('clusters').document()
             doc.set({
                 'username': username,
-                'name': f'Unnamed Cluster {i+1}',
+                'name': f'{cluster_titles[i]}',
                 'center': cluster_center
             })
             doc_ids.append(doc.id)
