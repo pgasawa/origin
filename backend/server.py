@@ -12,6 +12,8 @@ from firebase_admin import credentials, firestore
 import web_scraper, summarization
 from ChatBot import cli_app, ingest_data
 from browser_history import new_clusters, existing_clusters
+from semantic_search import find_k_closest_urls
+from collaborative_filtering import recommendations
 
 from embeddings import run_kmeans, run_kmeans_2
 
@@ -115,6 +117,30 @@ def top_n_urls():
         urls.append(doc.to_dict())
         del urls[-1]['embedding']
     
+    return json.dumps({
+        'message': 'succeeded!',
+        'urls': urls
+    })
+
+@app.route('/semantic-search')
+def semantic_search_endpoint():
+    args = request.args
+    query = args['query']
+    username = args['username']
+
+    urls = find_k_closest_urls(db, 3, username, query)
+    return json.dumps({
+        'message': 'succeeded!',
+        'urls': urls
+    })
+    
+@app.route('/recommendations')
+def recommendations_endpoint():
+    args = request.args
+    username = args['username']
+    cluster_id = args['cluster_id']
+
+    urls = recommendations(db, username, cluster_id)
     return json.dumps({
         'message': 'succeeded!',
         'urls': urls

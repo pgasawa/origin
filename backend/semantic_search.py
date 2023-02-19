@@ -8,9 +8,10 @@ def find_k_closest_urls(db, k, username, query):
     urls = []
     for ref in url_refs:
         doc = ref.to_dict()
-        doc['embedding'] = np.array(doc['embedding'])
-        doc['l2_dist'] = np.linalg.norm(doc['embedding'] - query_embedding)
+        doc['l2_dist'] = float(np.linalg.norm(np.array(doc['embedding']) - query_embedding))
         urls.append(doc)
 
     urls = list(sorted(urls, key=lambda d: d['l2_dist']))[:k]
+    for url in urls:
+        del url['embedding']
     return urls
