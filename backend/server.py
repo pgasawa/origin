@@ -77,20 +77,20 @@ def cluster_chat():
     answer, chat_history = cli_app.ask_question(cluster_id, question, chat_history)
     return answer, repr(chat_history)
 
-@app.route('/send-browser-history')
+@app.route('/send-browser-history', methods=['POST'])
 def send_browser_history():
-    args = request.args
-    username = args.get('username')
-    urls = args.get('urls').split(',')
-    titles = args.get('titles').split(',')
-    timestamps = args.get('timestamps').split(',')
+    form = request.form
+    username = form['username']
+    urls = form['urls'].split(',')
+    titles = form['titles'].split(',')
+    timestamps = form['timestamps'].split(',')
 
     num_urls = db.collection('urls').where('username', '==', username).count().get()[0][0].value
     if num_urls == 0:
         new_clusters(db, username, titles, urls, timestamps)
     else:
         existing_clusters(db, username, titles, urls, timestamps)
-        
+
     return json.dumps({'message': 'succeeded!'})
 
 app.run()
