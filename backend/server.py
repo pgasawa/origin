@@ -51,6 +51,8 @@ def change_cluster_name():
     args = request.args
     cluster_id = args.get('cluster_id')
     new_cluster_name = args.get('new_cluster_name')
+    print("ID", cluster_id)
+    print("New", new_cluster_name)
 
     doc = db.collection('clusters').document(cluster_id)
     doc.update({
@@ -64,7 +66,8 @@ def summarize_cluster():
     args = request.args
     cluster_id = args.get('cluster_id')
 
-    f = open(f"./{cluster_id}_output.txt", "w")
+    f = open(f"{cluster_id}_output.txt", "r")
+    print(f"{cluster_id}_output.txt")
     input_text = " ".join(f.readlines()).replace("\n\n", " ")
     return summarization.summary(input_text)
 
@@ -118,3 +121,4 @@ def top_n_urls():
     })
 
 app.run()
+# existing_clusters(db, "arvind6902@gmail.com", [], [], [])

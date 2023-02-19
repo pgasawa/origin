@@ -1,27 +1,35 @@
 import './App.css';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { Link } from '@mui/material';
 
-function Workspace() {
+const Workspace = (props) => {
     const [urls, setUrls] = useState([]);
-    const [summary, setSummary] = useState('');
+    const [summary, setSummary] = useState(null);
     const [userInput, setUserInput] = useState('');
     const [botResponse, setBotResponse] = useState('');
+    const [workspaceID, setWorkspaceID] = useState(Cookies.get('curent_workspace_id'));
+
+    useEffect( () => {
+      setWorkspaceID(Cookies.get('curent_workspace_id'))
+  }, [])
 
     useEffect(() => {
         // Fetch the list of URLs from the API
-        axios.get('http://127.0.0.1:5000.com/top-n-urls')
+        console.log(`http://127.0.0.1:5000/top-n-urls?username=arvind6902@gmail.com&cluster_id=${workspaceID}`)
+        axios.get(`http://127.0.0.1:5000/top-n-urls?username=arvind6902@gmail.com&cluster_id=${workspaceID}`)
           .then(response => {
+            console.log("WINNER: ", response)
             setUrls(response.data.urls);
           })
           .catch(error => {
+            console.log("SOMETHING WENT WRONG")
             console.error(error);
           });
     
         // Fetch the paragraph from the API
-        axios.get('http://127.0.0.1:5000/summarize-cluster')
+        axios.get(`http://127.0.0.1:5000/summarize-cluster?cluster_id=${workspaceID}`)
           .then(response => {
             setSummary(response.data);
           })
@@ -38,19 +46,44 @@ function Workspace() {
     setBotResponse(response);
     }
 
+    const getUrlsComponent = useCallback(() => {
+      if (urls) {
+        const component_urls = []
+          for (var i = 0; i < urls.length; i++) { 
+            const url = urls[i];
+            const url_component = <li key={i}><a href={url.url} target="_blank">{url.title}</a></li>
+            component_urls.push(url_component)
+        }
+        return component_urls
+      } else {
+        return "Loading URLs"
+      }
+    }, [urls])
+
+    function getSummary() {
+      if (summary) {
+        return summary
+      } else {
+        return "Loading summary."
+      }
+    }
+
     return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className='Time' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{props.workspaceName}</div>
+        
         <div>
         <h2>URLs</h2>
         <ul>
-            {urls.map((url, index) => (
-            <li key={index}>{url}</li>
-            ))}
+            {/* {urls.map((url, index) => (
+            <li key={index}>{url.url}</li>
+            ))} */}
+            {getUrlsComponent()}
         </ul>
         </div>
         <div>
         <h2>Summary</h2>
-        <p>{summary}</p>
+        <p>{getSummary()}</p>
         </div>
         <div>
         <h2>Chatbot</h2>
@@ -70,3 +103,5 @@ function Workspace() {
     </div>
     );
 }
+
+export default Workspace;

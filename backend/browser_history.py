@@ -121,7 +121,7 @@ def existing_clusters(db, username, titles, urls, timestamps):
     new_cluster_objs = []
     new_cluster_ids = []
     # Calculate new clusters
-    kmeans, embeddings, cluster_indices = run_kmeans_2(all_titles)
+    kmeans, embeddings, cluster_indices, _ = run_kmeans_2(all_titles)
     for cluster_idx in cluster_indices:
         new_cluster_mean = kmeans.cluster_centers_[cluster_idx].tolist()
         best_old_mean_id, best_old_mean_obj, best_old_dist = None, None, math.inf
