@@ -1,20 +1,42 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import './card.css'
+import React, { useState, useEffect } from 'react';
+import { Text, TextInput, View } from 'react-native';
 
 export default function Cluster(props) {
+  const [text, setText] = useState(props.title);
+  function onEnter(newText) {
+    setText(newText);
+  }
   return (
-    <Card sx={{ maxWidth: 300 }}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {props.title}
-        </Typography>
-        <hr />
-        <Button size="medium" uppercase={false}> Launch Workspace </Button>
-      </CardContent>
-    </Card>
+    <Stack direction="column">
+      <TextInput
+        style={{
+          color: "black",
+          padding: 0,
+          paddingLeft: 1,
+          justifyContent: "left",
+          backgroundColor: 'white',
+          textTransform: "lowercase"
+        }}
+        placeholder="edit me"
+        onSubmitEditing={(newText) => onEnter(newText)}
+      />
+
+      <Button
+        className="ClusterButton"
+        variant="contained"
+        endIcon={<RocketLaunchIcon />}
+        style={{
+          backgroundColor: 'black',
+          fontSize: 'medium'
+        }}
+      >
+        {text}
+      </Button>
+    </Stack>
+
   );
 }
