@@ -2,8 +2,9 @@ import './App.css';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import backButton from './components/backButton.js'
-import { Link, Button, Card, CardContent, Container, Typography, Box, Paper, Stack } from '@mui/material';
+import { Link, Box, Stack, Button, Paper } from '@mui/material';
+import backButton from './components/backButton';
+import { styled } from '@mui/material/styles';
 
 const Workspace = (props) => {
   const [urls, setUrls] = useState([]);
@@ -11,6 +12,8 @@ const Workspace = (props) => {
   const [userInput, setUserInput] = useState('');
   const [botResponse, setBotResponse] = useState('');
   const [workspaceID, setWorkspaceID] = useState(Cookies.get('curent_workspace_id'));
+  const [chatHistory, setChatHistory] = useState('[]');
+  const [disableChatButton, setDisableChatButton] = useState(false);
 
   useEffect(() => {
     setWorkspaceID(Cookies.get('curent_workspace_id'))
@@ -44,7 +47,9 @@ const Workspace = (props) => {
   }
 
   function handleBotResponse(response) {
-    setBotResponse(response);
+    // console.log(response)
+    setBotResponse(response.data.answer);
+    setChatHistory(response.data.history)
   }
 
   const getUrlsComponent = useCallback(() => {
@@ -52,10 +57,32 @@ const Workspace = (props) => {
       const component_urls = []
       for (var i = 0; i < urls.length; i++) {
         const url = urls[i];
-        const url_component = <Link href={url.url} color="inherit">{url.title}</Link>
+        const url_component = (<Item>
+          <p style={{ color: 'black', padding: 0, margin: 0 }}>{url.title}</p>
+          <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%'}}>
+            <Link href={url.url} target="_blank" color="inherit">{url.url}</Link>
+          </div>
+        </Item>)
         component_urls.push(url_component)
       }
       return component_urls
+    } else {
+      return "Loading URLs"
+    }
+  }, [urls])
+
+  const getChatHistory = useCallback(() => {
+    if (chatHistory) {
+      const component_chats = []
+      for (var i = 0; i < chatHistory.length; i++) {
+        const userchat = chatHistory[i][0];
+        const botchat = chatHistory[i][1];
+        var user_component = <div style={{borderRadius: '5%', fill: 'black', color: 'white'}}> </div>
+        var bot_component = <div style={{borderRadius: '5%', fill: 'white', color: 'black'}}> </div>
+        component_chats.push(user_component)
+        component_chats.push(bot_component)
+      }
+      return component_chats
     } else {
       return "Loading URLs"
     }
@@ -69,48 +96,118 @@ const Workspace = (props) => {
     }
   }
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <div className='Time' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{props.workspaceName}</div>
-      <Box sx={{ width: '100%' }}>
-        <Stack spacing={3} justifyContent='center', alignItems='center'>
-          {getUrlsComponent()}
+    <div>
+      <Box sx={{ margin: 2 }}>
+        <div style={{ float: 'right' }}>
+          {backButton(props.setUpdate)}
+        </div>
+        <Box sx={{ margin: 2 }}></Box>
+        <div className='Headings' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {props.workspaceName}
+        </div>
+        <Stack direction='row'>
+          <Box className='LeftColumn' sx={{ width: '30%', marginRight: 2 }}>
+            <Box >
+              <div className='Subheadings'>Last Visited</div>
+              <Stack spacing={2}>
+                {/* {urls.map((url, index) => (
+              <li key={index}>{url.url}</li>
+              ))} */}
+                {getUrlsComponent()}
+              </Stack>
+
+            </Box>
+            <Box sx={{ margin: 4 }}></Box>
+            {/* <hr ></hr> */}
+            <Box >
+              <div className='Subheadings'>Related Views</div>
+              <p style={{ fontStyle: 'italic' }}>People in your organization also viewed</p>
+              <Stack spacing={2}>
+                {/* {urls.map((url, index) => (
+              <li key={index}>{url.url}</li>
+              ))} */}
+                {getUrlsComponent()}
+              </Stack>
+            </Box>
+          </Box>
+          <Box className='LeftColumn' sx={{ width: '40%', marginRight: 2 }}>
+            <Box >
+              <div className='Subheadings'>Summary</div>
+              {getSummary()}
+
+            </Box>
+            <Box sx={{ margin: 4 }}></Box>
+            {/* <hr ></hr> */}
+            <Box >
+              <div className='Subheadings'>Semantic Search</div>
+              <Stack spacing={2}>
+                {getUrlsComponent()}
+              </Stack>
+            </Box>
+          </Box>
+          <div className='LeftColumn' style={{ width: '30%' }}>
+            <Box >
+              <div className='Subheadings'>AI Assistant</div>
+              <p>Hi! I'm Origin, and I'm here to assist you! I'm fine-tuned on {props.workspaceName}. Feel free to ask me specific questions you might have!</p>
+
+              <input type="text" value={userInput} onChange={handleUserInput} />
+              <Button
+                style={{ color: 'black' }}
+                disabled={disableChatButton}
+                onClick={() => {
+                  // Make a call to the chatbot API with the user's input
+                  setDisableChatButton(true);
+                  axios.get(`http://127.0.0.1:5000/cluster-chat-bot?cluster_id=${workspaceID}&title=${props.workspaceName}&question=${userInput}&history=${chatHistory}`)
+                    .then(response => {
+                      handleBotResponse(response);
+                      setDisableChatButton(false);
+                    })
+                    .catch(error => {
+                      console.error(error);
+                      setDisableChatButton(false);
+                    });
+                }}>Send</Button>
+              {getChatHistory}
+            </Box>
+          </div>
         </Stack>
       </Box>
-
-
-      <Container maxWidth="md">
-        <br /><br />
-        <Card>
-          <CardContent style={{ textAlign: 'center' }}>
-            <Typography>
-              <span style={{ fontSize: '48px', fontWeight: 200 }}>{props.workspaceName}</span>
-              {backButton(props.setUpdate)}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Container>
-
-      <div>
-        <h2>hihiihihi</h2>
-        {/* <p>{getSummary()}</p> */}
-      </div>
-      <div>
-        <h2>Chatbot</h2>
-        <input type="text" value={userInput} onChange={handleUserInput} />
-        <Button onClick={() => {
-          // Make a call to the chatbot API with the user's input
-          axios.post('http://127.0.0.1:5000/cluster_chat', { input: userInput })
-            .then(response => {
-              handleBotResponse(response.data);
-            })
-            .catch(error => {
-              console.error(error);
-            });
-        }}>Send</Button>
-        <p>{botResponse}</p>
-      </div>
     </div>
+    //     {/* <div>
+    //     <h2>Summary</h2>
+    //     <p>{getSummary()}</p>
+
+    //     </div>
+    //     <div>
+    //     <h2>Chatbot</h2>
+    //     <input type="text" value={userInput} onChange={handleUserInput} />
+    //     <button 
+    //         disabled={disableChatButton}
+    //         onClick={() => {
+    //         // Make a call to the chatbot API with the user's input
+    //         setDisableChatButton(true);
+    //         axios.get(`http://127.0.0.1:5000/cluster-chat-bot?cluster_id=${workspaceID}&title=${props.workspaceName}&question=${userInput}&history=${chatHistory}`)
+    //         .then(response => {
+    //             handleBotResponse(response);
+    //             setDisableChatButton(false);
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //             setDisableChatButton(false);
+    //         });
+    //     }}>Send</button>
+    //     <p>{botResponse}</p>
+    //     </div>
+    // </div> */}
   );
 }
 

@@ -48,4 +48,15 @@
   font-weight: 200;
 }
 
+.Subheadings {
+  font-size: 6vh;
+  color: rgb(0, 0, 0);
+  font-weight: 200;
+}
+
+.Headings {
+  font-size: 10vh;
+  color: rgb(0, 0, 0);
+  font-weight: 250;
+}
 

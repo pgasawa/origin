@@ -36,19 +36,7 @@ export default function Cluster(props) {
 
   return (
       <Stack direction="column">
-          <TextInput
-              style={{
-                  color: 'black',
-                  padding: 0,
-                  paddingLeft: 1,
-                  justifyContent: 'left',
-                  backgroundColor: 'white',
-                  textTransform: 'lowercase'
-              }}
-              onSubmitEditing={onEnter}
-              onChange={(evt) => setInput(evt.target.value)}
-              value={input}
-          />
+          
 
           <Button
               id="ClusterButton"
@@ -63,6 +51,19 @@ export default function Cluster(props) {
           >
               {text}
           </Button>
+          <TextInput
+              style={{
+                  color: 'black',
+                  padding: 0,
+                  paddingLeft: 1,
+                  justifyContent: 'left',
+                  backgroundColor: 'white',
+                  // textTransform: 'uppercase'
+              }}
+              onSubmitEditing={onEnter}
+              onChange={(evt) => setInput(evt.target.value)}
+              value={input}
+          />
       </Stack>
   );
 }
