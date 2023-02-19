@@ -37,7 +37,8 @@ def get_clusters():
         doc_dict = doc.to_dict()
         clusters.append({
             'name': doc_dict['name'],
-            'center': doc_dict['center']
+            'center': doc_dict['center'],
+            'id': doc.id
         })
     
     return json.dumps({

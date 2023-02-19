@@ -16,11 +16,11 @@ def new_clusters(db, username, titles, urls, timestamps):
     url_objs = []
     url_ids = []
 
-    kmeans, embeddings, cluster_indices = run_kmeans_2(titles)
+    kmeans, embeddings, cluster_indices, cluster_titles = run_kmeans_2(titles)
     cluster_centers = kmeans.cluster_centers_
     for cluster_num in cluster_indices:
         cluster_id = generateId()
-        cluster_name = f'Unnamed Cluster {cluster_num + 1}'
+        cluster_name = f'{cluster_titles[cluster_num]}'
         cluster_center = cluster_centers[cluster_num].tolist()
 
         cluster_objs.append({
