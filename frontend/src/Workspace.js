@@ -17,6 +17,7 @@ const Workspace = (props) => {
   const [disableChatButton, setDisableChatButton] = useState(false);
   const [disableSSButton, setDisableSSButton] = useState(false);
   const [semanticURLs, setSemanticURLs] = useState([]);
+  const [relatedURLs, setRelatedURLs] = useState([]);
 
   useEffect(() => {
     setWorkspaceID(Cookies.get('curent_workspace_id'))
@@ -39,6 +40,15 @@ const Workspace = (props) => {
     axios.get(`http://127.0.0.1:5000/summarize-cluster?cluster_id=${workspaceID}`)
       .then(response => {
         setSummary(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+      
+    console.log(`http://127.0.0.1:5000/recommendations?username=arvind6902@gmail.com&cluster_id=${workspaceID}`)
+    axios.get(`http://127.0.0.1:5000/recommendations?username=arvind6902@gmail.com&cluster_id=${workspaceID}`)
+      .then(response => {
+        setRelatedURLs(response.data.urls);
       })
       .catch(error => {
         console.error(error);
@@ -98,6 +108,25 @@ const Workspace = (props) => {
     }
   }, [semanticURLs])
 
+  const getRelatedUrlsComponent = useCallback(() => {
+    if (relatedURLs) {
+      const component_urls = []
+      for (var i = 0; i < relatedURLs.length; i++) {
+        const url = relatedURLs[i];
+        const url_component = (<Item style={{marginBottom: '20px'}}>
+          <p style={{ color: 'black', padding: 0, margin: 0 }}>{url.title}</p>
+          <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%'}}>
+            <Link href={url.url} target="_blank" color="inherit">{url.url}</Link>
+          </div>
+        </Item>)
+        component_urls.push(url_component)
+      }
+      return component_urls
+    } else {
+      return "Loading Results"
+    }
+  }, [relatedURLs])
+
   const getChatHistory = useCallback(() => {
     if (chatHistory) {
       const component_chats = []
@@ -142,9 +171,9 @@ const Workspace = (props) => {
           {props.workspaceName}
         </div>
         <Stack direction='row'>
-          <Box className='LeftColumn' sx={{ width: '30%', marginRight: 2 }}>
+          <Box className='LeftColumn' sx={{ width: '30%', marginRight: 4 }}>
             <Box >
-              <div className='Subheadings'>Last Visited</div>
+              <div className='Subheadings' style={{justifyContent: 'center', alignItems: 'center'}}>Last Visited</div>
               <Stack spacing={2}>
                 {/* {urls.map((url, index) => (
               <li key={index}>{url.url}</li>
@@ -162,13 +191,13 @@ const Workspace = (props) => {
                 {/* {urls.map((url, index) => (
               <li key={index}>{url.url}</li>
               ))} */}
-                {getUrlsComponent()}
+                {getRelatedUrlsComponent()}
               </Stack>
             </Box>
           </Box>
-          <Box className='LeftColumn' sx={{ width: '40%', marginRight: 2 }}>
+          <Box className='LeftColumn' sx={{ width: '40%', marginRight: 4, justifyContent: 'center', alignItems: 'center'  }}>
             <Box >
-              <div className='Subheadings'>Summary</div>
+              <div className='Subheadings' style={{justifyContent: 'center', alignItems: 'center' }}>Summary</div>
               {getSummary()}
 
             </Box>
