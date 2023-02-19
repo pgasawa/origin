@@ -84,7 +84,7 @@ This idea was a byproduct of our own experiences in college and high school -- w
 
 ## What we learned
 
-This project was an incredible learning experience for our team as we took on multiple technically complex challenges to reach our ending solution -- something we all thought that we had a potential to use ourselves. 
+This project was an incredible learning experience for our team as we took on multiple technically complex challenges to reach our ending solution -- something we all thought that we had a potential to use ourselves, so we are really proud of building an end-to-end solution.
 
 ## What's next for Origin
 
