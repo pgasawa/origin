@@ -56,7 +56,7 @@ def change_cluster_name():
 
     return json.dumps({'message': 'succeeded!'})
 
-@app.route('/summarize_cluster')
+@app.route('/summarize-cluster')
 def summarize_cluster():
     args = request.args
     cluster_id = args.get('cluster_id')
@@ -65,7 +65,7 @@ def summarize_cluster():
     input_text = " ".join(f.readlines()).replace("\n\n", " ")
     return summarization.summary(input_text)
 
-@app.route('/cluster_chat_bot')
+@app.route('/cluster-chat-bot')
 def cluster_chat():
     args = request.args
     question = args.get('question')
