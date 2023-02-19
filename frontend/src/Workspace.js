@@ -10,10 +10,13 @@ const Workspace = (props) => {
   const [urls, setUrls] = useState([]);
   const [summary, setSummary] = useState(null);
   const [userInput, setUserInput] = useState('');
+  const [semanticSearchInput, setSemanticSearchInput] = useState('');
   const [botResponse, setBotResponse] = useState('');
   const [workspaceID, setWorkspaceID] = useState(Cookies.get('curent_workspace_id'));
   const [chatHistory, setChatHistory] = useState('[]');
   const [disableChatButton, setDisableChatButton] = useState(false);
+  const [disableSSButton, setDisableSSButton] = useState(false);
+  const [semanticURLs, setSemanticURLs] = useState([]);
 
   useEffect(() => {
     setWorkspaceID(Cookies.get('curent_workspace_id'))
@@ -52,6 +55,11 @@ const Workspace = (props) => {
     setChatHistory(response.data.history)
   }
 
+  function handleSemanticSearchInput(newInput) {
+    setSemanticSearchInput(newInput.target.value);
+    console.log(newInput.target.value);
+  }
+
   const getUrlsComponent = useCallback(() => {
     if (urls) {
       const component_urls = []
@@ -70,6 +78,25 @@ const Workspace = (props) => {
       return "Loading URLs"
     }
   }, [urls])
+
+  const getSemanticUrlsComponent = useCallback(() => {
+    if (semanticURLs) {
+      const component_urls = []
+      for (var i = 0; i < semanticURLs.length; i++) {
+        const url = semanticURLs[i];
+        const url_component = (<Item style={{marginBottom: '20px'}}>
+          <p style={{ color: 'black', padding: 0, margin: 0 }}>{url.title}</p>
+          <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%'}}>
+            <Link href={url.url} target="_blank" color="inherit">{url.url}</Link>
+          </div>
+        </Item>)
+        component_urls.push(url_component)
+      }
+      return component_urls
+    } else {
+      return "Loading Results"
+    }
+  }, [semanticURLs])
 
   const getChatHistory = useCallback(() => {
     if (chatHistory) {
@@ -149,9 +176,26 @@ const Workspace = (props) => {
             {/* <hr ></hr> */}
             <Box >
               <div className='Subheadings'>Semantic Search</div>
-              <Stack spacing={2}>
-                {getUrlsComponent()}
-              </Stack>
+              <input type="text" value={semanticSearchInput} onChange={handleSemanticSearchInput} placeholder='Search Query' />
+              <Button
+                style={{ color: 'black' }}
+                disabled={disableSSButton}
+                onClick={() => {
+                  setDisableSSButton(true);
+                  axios.get(`http://127.0.0.1:5000/semantic-search?username=arvind6902@gmail.com&query=${semanticSearchInput}`)
+                    .then(response => {
+                      // handleBotResponse(response);
+                      setSemanticURLs(response.data.urls);
+                      console.log(response.data.urls);
+                      setDisableSSButton(false);
+                    })
+                    .catch(error => {
+                      setSemanticURLs([]);
+                      console.error(error);
+                      setDisableSSButton(false);
+                    });
+                }}>Send</Button>
+              {getSemanticUrlsComponent()}
             </Box>
           </Box>
           <div className='LeftColumn' style={{ width: '30%' }}>
