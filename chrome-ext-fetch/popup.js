@@ -29,14 +29,14 @@ async function postToAPI(lst) {
     }
     
     const rawResponse = await fetch('http://127.0.0.1:5000/send-browser-history', {
-        Method: 'POST',
+        method: 'POST',
         Headers: {
             Accept: 'application.json',
             'Content-Type': 'application/json'
         },
-        Body: JSON.stringify(dict),
+        body: JSON.stringify(dict),
     })
-    console.log(rawResponse.json())
+    console.log(rawResponse)
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

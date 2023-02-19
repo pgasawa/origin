@@ -3,15 +3,20 @@ import './App.css';
 import axios from 'axios'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import Cluster from './components/card';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Cookies from 'js-cookie';
+import Workspace from './Workspace';
 
 function App() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [clusterData, setClusterData] = useState(null);
+  const [currWorkspaceID, setCurrWorkspace] = useState(Cookies.get('curent_workspace_id'));
+  const [update, setUpdate] = useState(0);
+  document.title = "Origin"
 
   const getClusters = async () => {
     return axios.get('http://127.0.0.1:5000/get-clusters?username=arvind6902@gmail.com')
@@ -45,17 +50,38 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  function getClustersComponent() {
+  const getClustersComponent = useCallback(() => {
     const clusters = []
     for (var i = 0; i < clusterData.length; i++) { 
       const cluster = clusterData[i];
-      const preview = <Cluster title={cluster.name}></Cluster>
+      const preview = <Cluster title={cluster.name} id={cluster.id} update={setUpdate}></Cluster>
       clusters.push(preview)
    }
    return clusters
+  }, [clusterData])
+
+  useEffect( () => {
+      setCurrWorkspace(Cookies.get('curent_workspace_id'))
+      setUpdate(0)
+  }, [clusterData, update, currentTime])
+
+  function workspaceComponent() {
+    if (clusterData) {
+      let workspaceName = "";
+      for (var i = 0; i < clusterData.length; i++) { 
+        const cluster = clusterData[i];
+        if (cluster.id === currWorkspaceID) {
+          workspaceName = cluster.name;
+        }
+      }
+
+      return <Workspace workspaceName={workspaceName}></Workspace>
+    }
   }
 
-  if (clusterData) {
+  if (currWorkspaceID) {
+    return workspaceComponent()
+  } else if (clusterData) {
     return (
       
       <div className="App">

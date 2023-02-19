@@ -459,26 +459,29 @@ def scrape(urls, id):
     #         "https://people.eecs.berkeley.edu/~jrs/189/"]
     all_sentences = []
     for url in urls:
-        if url.find(".pdf")!=-1:
-            print("This is a pdf")
-            url_tag = "pdf"
-            sentences = extract_sentences(get_pdf_text(url), allow_number_start=False)
-        elif url.find(".txt")!=-1:
-            print("This is a text file")
-            url_tag = "text"
-            lines = text_from_txt(url)
-            sentences = extract_sentences(lines)
-        else:
-            print("This is a website")
-            url_tag = "website"
-            soup = get_soup(url)
-            paragraphs = get_paragraphs(soup)
-            sentences = extract_sentences(paragraphs)
+        try:
+            if url.find(".pdf")!=-1:
+                print("This is a pdf")
+                url_tag = "pdf"
+                sentences = extract_sentences(get_pdf_text(url), allow_number_start=False)
+            elif url.find(".txt")!=-1:
+                print("This is a text file")
+                url_tag = "text"
+                lines = text_from_txt(url)
+                sentences = extract_sentences(lines)
+            else:
+                print("This is a website: " + url)
+                url_tag = "website"
+                soup = get_soup(url)
+                paragraphs = get_paragraphs(soup)
+                sentences = extract_sentences(paragraphs)
 
-        for sentence in sentences:
-            all_sentences.append(sentence + "\n\n")
+            for sentence in sentences:
+                all_sentences.append(sentence + "\n\n")
+        except:
+            pass
 
     f = open(f"./{id}_output.txt", "w")
-    f.writelines(all_sentences)
+    f.writelines(all_sentences[:30])
     f.close()
 
