@@ -87,7 +87,7 @@ function App() {
         sx={{m: 10}}></Box>
         <div className="Workspaces">
         <Stack direction="row" spacing={4} justifyContent="center">
-        <div className='HelloMessage' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}> Loading workspaces.</div>
+        <div className='HelloMessage' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}> Loading workspaces...</div>
       </Stack>
           </div>
           </Box>
