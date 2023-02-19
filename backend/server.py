@@ -1,13 +1,14 @@
 import json
 import math
 import numpy as np
+import ast
 from flask import Flask, request
 from flask_cors import CORS
 
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-from ... import ingest_data, web_scraper, summarization
+from ... import ingest_data, web_scraper, summarization, cli_app
 
 from embeddings import run_kmeans
 
@@ -55,10 +56,22 @@ def change_cluster_name():
     return json.dumps({'message': 'succeeded!'})
 
 @app.route('/summarize_cluster')
-def summarize_cluster(cluster_id):
+def summarize_cluster():
+    args = request.args
+    cluster_id = args.get('cluster_id')
+
     f = open(f"./{cluster_id}_output.txt", "w")
     input_text = " ".join(f.readlines()).replace("\n\n", " ")
     return summarization.summary(input_text)
+
+@app.route('/cluster_chat_bot')
+def cluster_chat():
+    args = request.args
+    question = args.get('question')
+    chat_history = ast.literal_eval(args.get('history'))
+    
+    answer, chat_history = cli_app.ask_question(question, chat_history)
+    return answer, repr(chat_history)
 
 @app.route('/send-browser-history')
 def send_browser_history():
