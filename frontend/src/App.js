@@ -5,7 +5,8 @@ import Grid from '@mui/material/Grid'
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import Cluster from './components/card';
-
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 
 function App() {
 
@@ -19,26 +20,25 @@ function App() {
   }, []);
 
   return (
+    
     <div className="App">
+      <Box 
+      sx={{margin: 2}}>
+      <Box sx={{margin: 20}}></Box>
       <div className='Time' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{currentTime.toLocaleTimeString()}</div>
-      <div className='HelloMessage'></div>
+      <div className='HelloMessage' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}> Good morning, Ayushi.</div>
+      <Box 
+      sx={{m: 10}}></Box>
       <div className="Workspaces">
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-          <Cluster color={'red'} className="BasicCard" title="CS 189"></Cluster>
-          </Grid>
-          <Grid item xs={4}>
-          <Cluster className="BasicCard" title="CS 170"></Cluster>
-          </Grid>
-          <Grid item xs={4}>
-          <Cluster className="BasicCard" title="CS 61A"></Cluster>
-          </Grid>
-          <Grid item xs={4}>
-          <Cluster className="BasicCard" title="CS 61B"></Cluster>
-          </Grid>
-        </Grid>
+      <Stack direction="row" spacing={4} justifyContent="center">
+      <Cluster title="CS 189"></Cluster>
+      <Cluster title="CS 170"></Cluster>
+      <Cluster title="UGBA 105"></Cluster>
+    </Stack>
         </div>
+        </Box>
     </div>
+   
   );
 }
 
