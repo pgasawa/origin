@@ -93,4 +93,27 @@ def send_browser_history():
 
     return json.dumps({'message': 'succeeded!'})
 
+@app.route('/top-n-urls')
+def top_n_urls():
+    N = 5
+    args = request.args
+    username = args['username']
+    cluster_id = args['cluster_id']
+
+    docs = db.collection('urls').where('username', '==', username)\
+                                .where('cluster_id', '==', cluster_id)\
+                                .order_by('timestamp', direction=firestore.Query.DESCENDING)\
+                                .limit(N)\
+                                .stream()
+    
+    urls = []
+    for doc in docs:
+        urls.append(doc.to_dict())
+        del urls[-1]['embedding']
+    
+    return json.dumps({
+        'message': 'succeeded!',
+        'urls': urls
+    })
+
 app.run()
