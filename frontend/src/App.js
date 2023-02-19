@@ -75,7 +75,7 @@ function App() {
         }
       }
 
-      return <Workspace workspaceName={workspaceName}></Workspace>
+      return <Workspace workspaceName={workspaceName} setUpdate={setUpdate}></Workspace>
     }
   }
 

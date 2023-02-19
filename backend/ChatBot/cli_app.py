@@ -5,6 +5,7 @@ def ask_question(id, question, chat_history):
     with open(f"vectorstore{id}.pkl", "rb") as f:
         vectorstore = pickle.load(f)
 
+    qa_chain = get_chain(vectorstore)
     result = qa_chain({"question": question, "chat_history": chat_history})
     chat_history.append((question, result["answer"]))
     return result["answer"].strip(), chat_history

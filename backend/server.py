@@ -79,7 +79,7 @@ def cluster_chat():
     chat_history = ast.literal_eval(args.get('history'))
     
     answer, chat_history = cli_app.ask_question(cluster_id, question, chat_history)
-    return answer, repr(chat_history)
+    return json.dumps({'answer': answer, 'history': repr(chat_history)})
 
 @app.route('/send-browser-history', methods=['POST'])
 def send_browser_history():

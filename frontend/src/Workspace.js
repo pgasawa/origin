@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Link } from '@mui/material';
+import backButton from './components/backButton';
 
 const Workspace = (props) => {
     const [urls, setUrls] = useState([]);
@@ -10,6 +11,8 @@ const Workspace = (props) => {
     const [userInput, setUserInput] = useState('');
     const [botResponse, setBotResponse] = useState('');
     const [workspaceID, setWorkspaceID] = useState(Cookies.get('curent_workspace_id'));
+    const [chatHistory, setChatHistory] = useState('[]');
+    const [disableChatButton, setDisableChatButton] = useState(false);
 
     useEffect( () => {
       setWorkspaceID(Cookies.get('curent_workspace_id'))
@@ -43,7 +46,9 @@ const Workspace = (props) => {
     }
 
     function handleBotResponse(response) {
-    setBotResponse(response);
+      console.log(response)
+      setBotResponse(response.data.answer);
+      setChatHistory(response.data.history)
     }
 
     const getUrlsComponent = useCallback(() => {
@@ -70,7 +75,14 @@ const Workspace = (props) => {
 
     return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div className='Time' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{props.workspaceName}</div>
+        
+        <div className='Time' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          {props.workspaceName}
+          <br></br>
+          <div>
+            {backButton(props.setUpdate)}
+          </div>
+        </div>
         
         <div>
         <h2>URLs</h2>
@@ -84,18 +96,24 @@ const Workspace = (props) => {
         <div>
         <h2>Summary</h2>
         <p>{getSummary()}</p>
+        
         </div>
         <div>
         <h2>Chatbot</h2>
         <input type="text" value={userInput} onChange={handleUserInput} />
-        <button onClick={() => {
+        <button 
+            disabled={disableChatButton}
+            onClick={() => {
             // Make a call to the chatbot API with the user's input
-            axios.post('http://127.0.0.1:5000/cluster_chat', { input: userInput })
+            setDisableChatButton(true);
+            axios.get(`http://127.0.0.1:5000/cluster-chat-bot?cluster_id=${workspaceID}&question=${userInput}&history=${chatHistory}`)
             .then(response => {
-                handleBotResponse(response.data);
+                handleBotResponse(response);
+                setDisableChatButton(false);
             })
             .catch(error => {
                 console.error(error);
+                setDisableChatButton(false);
             });
         }}>Send</button>
         <p>{botResponse}</p>
