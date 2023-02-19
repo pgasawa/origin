@@ -34,6 +34,7 @@ function App() {
       <Cluster title="CS 189"></Cluster>
       <Cluster title="CS 170"></Cluster>
       <Cluster title="UGBA 105"></Cluster>
+      <Cluster title="R1B"></Cluster>
     </Stack>
         </div>
         </Box>

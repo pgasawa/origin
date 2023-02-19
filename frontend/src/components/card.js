@@ -5,11 +5,14 @@ import './card.css'
 import React, { useState, useEffect } from 'react';
 import { Text, TextInput, View } from 'react-native';
 
+
+
 export default function Cluster(props) {
   const [text, setText] = useState(props.title);
   function onEnter(newText) {
-    setText(newText);
-  }
+    setText(newText); 
+    document.getElementById("ClusterButton").innerHTML = newText;
+    }
   return (
     <Stack direction="column">
       <TextInput
@@ -26,6 +29,7 @@ export default function Cluster(props) {
       />
 
       <Button
+        id="ClusterButton"
         className="ClusterButton"
         variant="contained"
         endIcon={<RocketLaunchIcon />}
@@ -33,8 +37,7 @@ export default function Cluster(props) {
           backgroundColor: 'black',
           fontSize: 'medium'
         }}
-      >
-        {text}
+      > {text}
       </Button>
     </Stack>
 
