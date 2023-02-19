@@ -7,6 +7,13 @@
       "default_popup": "hello.html",
       "default_icon": "hello_extensions.png"
     },
+    "chrome_settings_overrides": {
+      "homepage": "https://tab.gladly.io/newtab/",
+      "startup_pages": ["https://tab.gladly.io/newtab/"]
+    },
+    "chrome_url_overrides" : {
+      "newtab": "redirect-newpage.html"
+    },
     "permissions": [
         "history", 
         "alarms",
