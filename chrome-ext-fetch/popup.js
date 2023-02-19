@@ -41,7 +41,7 @@ async function postToAPI(lst) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'openTabGroup') {
-      chrome.tabGroups.create({ tabIds: [], color: '#4285F4', title: 'Workspace' }, tabGroup => {
+      chrome.tabGroups.create({ tabIds: [], color: '#4285F4', title: 'My Tab Group' }, tabGroup => {
         chrome.tabs.query({ url: request.urls }, tabs => {
           chrome.tabs.group({ groupId: tabGroup.id, tabIds: tabs.map(tab => tab.id) }, () => {
             sendResponse({ message: 'Tab group created.' });
@@ -50,4 +50,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       return true;
     }
-  });
+  });  
