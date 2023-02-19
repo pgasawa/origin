@@ -2,7 +2,6 @@ from urllib.request import urlopen, urlretrieve
 from bs4 import NavigableString, Tag
 import bs4 as bs
 import fitz
-import fasttext
 import operator
 
 def get_html(link_url):
