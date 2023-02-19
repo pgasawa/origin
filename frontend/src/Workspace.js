@@ -106,7 +106,7 @@ const Workspace = (props) => {
             onClick={() => {
             // Make a call to the chatbot API with the user's input
             setDisableChatButton(true);
-            axios.get(`http://127.0.0.1:5000/cluster-chat-bot?cluster_id=${workspaceID}&question=${userInput}&history=${chatHistory}`)
+            axios.get(`http://127.0.0.1:5000/cluster-chat-bot?cluster_id=${workspaceID}&title=${props.workspaceName}&question=${userInput}&history=${chatHistory}`)
             .then(response => {
                 handleBotResponse(response);
                 setDisableChatButton(false);

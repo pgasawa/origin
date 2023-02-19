@@ -54,7 +54,7 @@ function App() {
     const clusters = []
     for (var i = 0; i < clusterData.length; i++) { 
       const cluster = clusterData[i];
-      const preview = <Cluster title={cluster.name} id={cluster.id} update={setUpdate}></Cluster>
+      const preview = <Cluster title={cluster.name} id={cluster.id} setUpdate={setUpdate}></Cluster>
       clusters.push(preview)
    }
    return clusters

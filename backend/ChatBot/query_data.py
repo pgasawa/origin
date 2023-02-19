@@ -11,17 +11,17 @@ Follow Up Input: {question}
 Standalone question:"""
 CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_template)
 
-template = """You are an AI assistant for answering questions about machine learning.
+template = """You are an AI assistant for answering questions related to {cluster_title}.
 You are given the following extracted parts of a long document and a question. Provide a conversational answer.
 In your answer, recommend places to find more information.
 If you don't know the answer, just say "Hmm, I'm not sure." Don't try to make up an answer.
-If the question is not about machine learning, politely inform them that you are tuned to only answer questions about machine learning.
+If the question is not related to {cluster_title}, politely inform them that you are tuned to only answer questions about machine learning.
 Question: {question}
 =========
 {context}
 =========
 Answer in Markdown:"""
-QA_PROMPT = PromptTemplate(template=template, input_variables=["question", "context"])
+QA_PROMPT = PromptTemplate(template=template, input_variables=["cluster_title", "question", "context"])
 
 
 def get_chain(vectorstore):
