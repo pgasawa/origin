@@ -8,7 +8,8 @@ from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-from ... import ingest_data, web_scraper, summarization, cli_app
+import ingest_data, web_scraper, summarization
+from ChatBot import cli_app
 
 from embeddings import run_kmeans
 
