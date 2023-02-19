@@ -43,6 +43,26 @@ def get_high_dim_embeddings(texts):
     embeddings = np.array(embeddings)
     return embeddings
 
+def run_kmeans_2(texts, num_clusters=2):
+    # Define number of clusters and fit k-means model
+    vec_embeddings = get_high_dim_embeddings(texts)
+    kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(vec_embeddings)
+
+    # Get the labels and indices of vectors in each cluster
+    labels = kmeans.labels_
+    cluster_indices = {}
+    for i, label in enumerate(labels):
+        if label not in cluster_indices:
+            cluster_indices[label] = [i]
+        else:
+            cluster_indices[label].append(i)
+
+    # Print indices of vectors in each cluster
+    for cluster, indices in cluster_indices.items():
+        print(f"Cluster {cluster} has {len(indices)} vectors with indices: {indices}")
+
+    return kmeans, vec_embeddings, cluster_indices
+
 def run_kmeans(texts, num_clusters=2):
     # Define number of clusters and fit k-means model
     vec_embeddings = get_high_dim_embeddings(texts)
