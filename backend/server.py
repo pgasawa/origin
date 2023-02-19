@@ -8,8 +8,8 @@ from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-import ingest_data, web_scraper, summarization
-from ChatBot import cli_app
+import web_scraper, summarization
+from ChatBot import cli_app, ingest_data
 
 from embeddings import run_kmeans
 
@@ -68,10 +68,11 @@ def summarize_cluster():
 @app.route('/cluster-chat-bot')
 def cluster_chat():
     args = request.args
+    cluster_id = args.get('cluster_id')
     question = args.get('question')
     chat_history = ast.literal_eval(args.get('history'))
     
-    answer, chat_history = cli_app.ask_question(question, chat_history)
+    answer, chat_history = cli_app.ask_question(cluster_id, question, chat_history)
     return answer, repr(chat_history)
 
 @app.route('/send-browser-history')
