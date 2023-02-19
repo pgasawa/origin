@@ -5,15 +5,15 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-export default function Cluster() {
+export default function Cluster(props) {
   return (
     <Card sx={{ maxWidth: 300 }}>
       <CardContent>
         <Typography variant="h5" component="div">
-          CS 189
+          {props.title}
         </Typography>
         <hr />
-        <Button size="medium">LAUNCH WORKSPACE</Button>
+        <Button size="medium" uppercase={false}> Launch Workspace </Button>
       </CardContent>
     </Card>
   );

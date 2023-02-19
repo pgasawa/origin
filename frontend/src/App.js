@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className='Time'>{currentTime.toLocaleTimeString()}</div>
+      <div className='Time' style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{currentTime.toLocaleTimeString()}</div>
       <div className='HelloMessage'></div>
       <div className="Workspaces">
         <Grid container spacing={2}>
@@ -32,6 +32,9 @@ function App() {
           </Grid>
           <Grid item xs={4}>
           <Cluster className="BasicCard" title="CS 61A"></Cluster>
+          </Grid>
+          <Grid item xs={4}>
+          <Cluster className="BasicCard" title="CS 61B"></Cluster>
           </Grid>
         </Grid>
         </div>
