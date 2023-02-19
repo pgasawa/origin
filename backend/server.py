@@ -11,7 +11,7 @@ from firebase_admin import credentials, firestore
 
 import web_scraper, summarization
 from ChatBot import cli_app, ingest_data
-from send_browser_history import new_clusters, existing_clusters
+from browser_history import new_clusters, existing_clusters
 
 from embeddings import run_kmeans, run_kmeans_2
 
