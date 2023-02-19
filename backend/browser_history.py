@@ -16,7 +16,7 @@ def new_clusters(db, username, titles, urls, timestamps):
     url_objs = []
     url_ids = []
 
-    kmeans, embeddings, cluster_indices, cluster_titles = run_kmeans_2(titles)
+    kmeans, embeddings, cluster_indices, cluster_titles = run_kmeans_2(titles, 4)
     cluster_centers = kmeans.cluster_centers_
     for cluster_num in cluster_indices:
         cluster_id = generateId()

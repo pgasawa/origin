@@ -8,8 +8,8 @@
       "default_icon": "hello_extensions.png"
     },
     "chrome_settings_overrides": {
-      "homepage": "https://tab.gladly.io/newtab/",
-      "startup_pages": ["https://tab.gladly.io/newtab/"]
+      "homepage": "http://localhost:3000/",
+      "startup_pages": ["http://localhost:3000/"]
     },
     "chrome_url_overrides" : {
       "newtab": "redirect-newpage.html"

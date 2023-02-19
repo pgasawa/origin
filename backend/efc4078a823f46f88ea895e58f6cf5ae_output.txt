@@ -1,0 +1,60 @@
+The Bellman–Ford algorithm is an algorithm that computes shortest paths from a single source vertex to all of the other vertices in a weighted digraph.[1] It is slower than Dijkstra's algorithm for the same problem, but more versatile, as it is capable of handling graphs in which some of the edge weights are negative numbers.
+
+The algorithm was first proposed by Alfonso Shimbel (1955), but is instead named after Richard Bellman and Lester Ford Jr., who published it in 1958 and 1956, respectively.[2] Edward F.
+
+Negative edge weights are found in various applications of graphs, hence the usefulness of this algorithm.[3] If a graph contains a "negative cycle" (i.e. a cycle whose edges sum to a negative value) that is reachable from the source, then there is no cheapest path: any path that has a point on the negative cycle can be made cheaper by one more walk around the negative cycle.
+
+Like Dijkstra's algorithm, Bellman–Ford proceeds by relaxation, in which approximations to the correct distance are replaced by better ones until they eventually reach the solution.
+
+In both algorithms, the approximate distance to each vertex is always an overestimate of the true distance, and is replaced by the minimum of its old value and the length of a newly found path.
+
+However, Dijkstra's algorithm uses a priority queue to greedily select the closest vertex that has not yet been processed, and performs this relaxation process on all of its outgoing edges; by contrast, the Bellman–Ford algorithm simply relaxes all the edges, and does this | V | − 1 {\displaystyle |V|-1} times, where | V | {\displaystyle |V|} is the number of vertices in the graph.
+
+In each of these repetitions, the number of vertices with correctly calculated distances grows, from which it follows that eventually all vertices will have their correct distances.
+
+This method allows the Bellman–Ford algorithm to be applied to a wider class of inputs than Dijkstra.
+
+The intermediate answers depend on the order of edges relaxed, but the final answer remains the same.
+
+Bellman–Ford runs in O ( | V | ⋅ | E | ) {\displaystyle O(|V|\cdot |E|)} time, where | V | {\displaystyle |V|} and | E | {\displaystyle |E|} are the number of vertices and edges respectively.
+
+Simply put, the algorithm initializes the distance to the source to 0 and all other nodes to infinity.
+
+Then for all edges, if the distance to the destination can be shortened by taking the edge, the distance is updated to the new lower value.
+
+The core of the algorithm is a loop that scans across all edges at every loop.
+
+For every i ≤ | V | − 1 {\displaystyle i\leq |V|-1} , at the end of the i {\displaystyle i} -th iteration, from any vertex v, following the predecessor trail recorded in predecessor yields a path that has a total weight that is at most distance[v], and further, distance[v] is a lower bound to the length of any path from source to v that uses at most i edges.
+
+Since the longest possible path without a cycle can be | V | − 1 {\displaystyle |V|-1} edges, the edges must be scanned | V | − 1 {\displaystyle |V|-1} times to ensure the shortest path has been found for all nodes.
+
+A final scan of all the edges is performed and if any distance is updated, then a path of length | V | {\displaystyle |V|} edges has been found which can only occur if at least one negative cycle exists in the graph.
+
+Lemma.
+
+Proof.
+
+For the base case of induction, consider i=0 and the moment before for loop is executed for the first time.
+
+Then, for the source vertex, source.distance = 0, which is correct.
+
+For other vertices u, u.distance = infinity, which is also correct because there is no path from source to u with 0 edges.
+
+For the inductive case, we first prove the first part.
+
+Consider a moment when a vertex's distance is updated by v.distance := u.distance + uv.weight.
+
+By inductive assumption, u.distance is the length of some path from source to u. Then u.distance + uv.weight is the length of the path from source to v that follows the path from source to u and then goes to v.
+
+For the second part, consider a shortest path P (there may be more than one) from source to v with at most i edges.
+
+Let u be the last vertex before v on this path.
+
+Then, the part of the path from source to u is a shortest path from source to u with at most i-1 edges, since if it were not, then there must be some strictly shorter path from source to u with at most i-1 edges, and we could then append the edge uv to this path to obtain a path with at most i edges that is strictly shorter than P—a contradiction.
+
+By inductive assumption, u.distance after i−1 iterations is at most the length of this path from source to u. Therefore, uv.weight + u.distance is at most the length of P.
+
+In the ith iteration, v.distance gets compared with uv.weight + u.distance, and is set equal to it if uv.weight + u.distance is smaller.
+
+Therefore, after i iterations, v.distance is at most the length of P, i.e., the length of the shortest path from source to v that uses at most i edges.
+

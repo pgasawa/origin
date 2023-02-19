@@ -1,0 +1,60 @@
+Is there a computer science topic more terrifying than Big O notation?
+
+Don’t let the name scare you, Big O notation is not a big deal.
+
+It’s very easy to understand and you don’t need to be a math whiz to do so.
+
+Big O, Big Omega, or Ω, and Big Theta, or Θ, are notations used to express the computational complexity of an algorithm.
+
+In this tutorial, you’ll learn the difference between Big O, Big Omega, and Big Theta notations.
+
+If you’re just joining us, you may want to start at the beginning with What is Big O Notation?.
+
+Be O(#1).
+
+Grab your copy of The Little Book of Big O.
+
+In computational complexity theory, asymptotic computational complexity is the usage of asymptotic analysis for the estimation of computational complexity of algorithms and computational problems, commonly associated with the usage of the big O notation.
+
+Right?
+
+No wonder this stuff is hard to learn.
+
+Let’s break this jargon down.
+
+These definitions make an easy concept harder to understand.
+
+No matter how large (or small) the value of x, our curve will never touch the x or y axes.
+
+Even if that number is Infinity.
+
+Especially if that number is zero.
+
+It’s mathematically impossible to divide by 0.
+
+Division is another way to think about this.
+
+How many times can we divide one in half in before we reach zero?
+
+There are infinite divisions!
+
+Half of 1 is ½.
+
+Half of ½ is ¼.
+
+Half of ¼ is ⅛.
+
+Half of ⅛ is 1/16.
+
+Half of 1/16 is… you see where this is going.
+
+With each division, our denominator increases by a power of 2.
+
+We will never be able to halve something into nothing.
+
+Unless it’s cake.
+
+In the chart above, the x and y axes are the asymptotes of the equation y = 1 / x.
+
+But any line can be an asymptote.
+

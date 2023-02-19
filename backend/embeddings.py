@@ -58,8 +58,8 @@ def run_kmeans_2(texts, num_clusters=2):
             cluster_indices[label].append(i)
 
     # # Print indices of vectors in each cluster
-    # for cluster, indices in cluster_indices.items():
-    #     print(f"Cluster {cluster} has {len(indices)} vectors with indices: {indices}")
+    for cluster, indices in cluster_indices.items():
+        print(f"Cluster {cluster} has {len(indices)} vectors with indices: {indices}")
 
     cluster_titles = {}
     for i, label in enumerate(labels):
@@ -71,17 +71,18 @@ def run_kmeans_2(texts, num_clusters=2):
     titles = []
     # print(cluster_titles)
     for cluster in cluster_titles:
-        prompt = "What noun describes the following texts? Please output only the noun and no other text. If you are unsure, please only output a noun that is most similar to the texts and nothing more: \"" + ' '.join(cluster_titles[cluster]) + "\""
-        # print(prompt)
-        prompt = prompt[:14000]
+        prompt = "What noun describes the following texts? Please output only the noun and no other text. If you are unsure, please only output a noun that is most similar to the texts and nothing more: \n\n \"" + ' '.join(cluster_titles[cluster]).replace("\n","") + "\""
+        print(prompt)
+        # prompt = prompt[:14000]
         response = openai.Completion.create(
-            engine='text-davinci-003',
+            engine='text-curie-001',
             prompt=prompt,
-            max_tokens=100,
+            max_tokens=50,
             n=1,
             stop=None,
-            temperature=0.5,
+            temperature=0,
         )
+        print(response.choices)
         titles.append(response.choices[0].text.strip())
 
     return kmeans, vec_embeddings, cluster_indices, titles
@@ -105,15 +106,15 @@ def run_kmeans(texts, num_clusters=2):
     # print(cluster_titles)
     for cluster in cluster_titles:
         prompt = "What noun describes the following texts? Please output only the noun and no other text. If you are unsure, please only output a noun that is most similar to the texts and nothing more: \"" + ' '.join(cluster_titles[cluster]) + "\""
-        # print(prompt)
-        prompt = prompt[:14000]
+        print(prompt)
+        # prompt = prompt[:14000]
         response = openai.Completion.create(
             engine='text-davinci-003',
             prompt=prompt,
-            max_tokens=100,
+            max_tokens=50,
             n=1,
             stop=None,
-            temperature=0.5,
+            temperature=0,
         )
         titles.append(response.choices[0].text.strip())
     return kmeans, titles

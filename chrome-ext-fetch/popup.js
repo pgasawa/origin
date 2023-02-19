@@ -27,6 +27,8 @@ async function postToAPI(lst) {
         'titles': lst[2],
         'timestamps': lst[3]
     }
+
+    console.log(dict)
     
     const rawResponse = await fetch('http://127.0.0.1:5000/send-browser-history', {
         method: 'POST',
