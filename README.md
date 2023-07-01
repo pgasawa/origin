@@ -1,4 +1,8 @@
-# TreeHacks 2023 Devpost
+# Origin: TreeHacks 2023 Submission
+
+**Update 🍐**: We won the Best Frontier Hack from Pear VC. We pitched to the team and received an investment offer valuing our startup at a cap of $2.5 million!
+
+See our Devpost submission here: [https://devpost.com/software/pathfinder-em2qjb](https://devpost.com/software/pathfinder-em2qjb).
 
 ## Inspiration
 
